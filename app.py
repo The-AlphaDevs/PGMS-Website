@@ -4,6 +4,15 @@ from flask import redirect, url_for, render_template
 import pyrebase
 from flask import request,session
 from flask import flash
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
+from controller.supervisor import get_supervisors
+
+from controller.supervisor import get_supervisors
+
+cred = credentials.Certificate("serviceAccountKey.json")
+firebase_admin.initialize_app(cred)
 
 
 config = {
@@ -37,8 +46,13 @@ def login_required(f):
 @app.route("/home")
 @login_required
 def home():
-    return "Hello World!"
+    return render_template('base.html')
 
+@app.route("/supervisor")
+@login_required
+def supervisor():
+    sups = get_supervisors()
+    return render_template('supervisor.html',sups = sups)
     
 @app.route("/login", methods=['GET','POST'])
 def login():
