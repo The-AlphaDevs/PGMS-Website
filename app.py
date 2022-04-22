@@ -39,6 +39,11 @@ def login_required(f):
 def home():
     return "Hello World!"
 
+
+@app.route("/complaints", methods=['GET'])
+def complaintsFunction():
+    return render_template("complaints_table.html")
+
     
 @app.route("/login", methods=['GET','POST'])
 def login():
@@ -49,7 +54,7 @@ def login():
             auth.sign_in_with_email_and_password(email, password)
             session['email'] = email
             flash("Login Successfull!!", 'success')
-            return redirect(url_for('home'))
+            return redirect(url_for('complaintsFunction'))
         except:
             flash("Login Unsuccessfull!!", 'danger')
             return redirect(url_for('login'))
