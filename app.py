@@ -4,6 +4,15 @@ from flask import redirect, url_for, render_template
 import pyrebase
 from flask import request,session
 from flask import flash
+import firebase_admin
+from firebase_admin import credentials
+from controller.supervisor import get_supervisors, upload_image_and_data
+
+
+cred = credentials.Certificate("serviceAccountKey.json")
+firebase_admin.initialize_app(cred, {
+    'storageBucket': "pgms-65b22.appspot.com"
+})
 
 
 config = {
@@ -37,8 +46,30 @@ def login_required(f):
 @app.route("/home")
 @login_required
 def home():
-    return "Hello World!"
+    return render_template('base.html')
 
+@app.route("/supervisor", methods=['GET'])
+@login_required
+def supervisor():
+    sups = get_supervisors()
+    return render_template('supervisor.html',sups = sups)
+
+@app.route("/addsupervisor", methods=['GET','POST'])
+@login_required
+def addsupervisor():
+    profile = None
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        ward = request.form['ward']
+        phoneno = request.form['phoneno']
+        if 'profile' in request.files:
+            profile = request.files['profile']
+        dob = request.form['dob']
+        upload_image_and_data(profile, name, email, ward, phoneno, dob)
+        flash("Supervisor Added Successfully!!", 'success')
+        return redirect(url_for('supervisor'))
+    return render_template('add-supervisor.html')
     
 @app.route("/login", methods=['GET','POST'])
 def login():
