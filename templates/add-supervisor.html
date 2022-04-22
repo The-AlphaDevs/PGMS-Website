@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %} Basic Elements {% endblock %} 
+
+<!-- Specific CSS Plugins goes HERE  -->
+{% block css_plugins %}
+
+  <link rel="stylesheet" href="/static/assets/vendors/select2/select2.min.css">
+  <link rel="stylesheet" href="/static/assets/vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
+
+{% endblock css_plugins %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<style>
+    #display-image{
+        width: 400px;
+        height: 225px;
+        border: 1px solid black;
+        background-position: center;
+        background-size: cover;
+        }
+</style>
+
+<div class="content-wrapper">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Add Supervisor Details</h4>
+            <form class="forms-sample" method="post" enctype="multipart/form-data">
+              <div class="form-group">
+                <label for="exampleInputName1">Name</label>
+                <input type="text" name="name" class="form-control" id="exampleInputName1" placeholder="Name">
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail3">Email address</label>
+                <input type="email" name="email" class="form-control" id="exampleInputEmail3" placeholder="Email">
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword4">Ward Name</label>
+                <input type="text" name="ward" class="form-control" id="exampleInputPassword4" placeholder="Ward Name">
+              </div>
+              <div class="form-group">
+                <label for="exampleInputMobile4">Phone Number</label>
+                <input type="number" name="phoneno" class="form-control" id="exampleInputMobile4" placeholder="Phone Number">
+              </div>
+              <div class="form-group">
+                <label>Profile Photo</label>
+                <p></p>
+                <input type="file" id="image-input" name="profile" accept="image/jpeg, image/png, image/jpg">
+                <div id="display-image" style= "display: none" ></div>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputDOB1">Date of Birth</label>
+                <input type="text" name="dob" class="form-control" id="exampleInputDOB1" placeholder="Date of Birth">
+              </div>
+              <button type="submit" class="btn btn-primary me-2">Submit</button>
+              <button class="btn btn-light">Cancel</button>
+            </form>
+          </div>
+        </div>
+      </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific JS Plugins goes HERE  -->
+{% block js_plugins %}
+
+  <script src="/static/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+  <script>
+    const image_input = document.querySelector("#image-input");
+
+    image_input.addEventListener("change", function() {
+    const reader = new FileReader();
+    reader.addEventListener("load", () => {
+        const uploaded_image = reader.result;
+        document.querySelector("#display-image").style.backgroundImage = `url(${uploaded_image})`;
+        document.querySelector("#display-image").style.display = 'block';
+    });
+    reader.readAsDataURL(this.files[0]);
+    });
+
+
+</script>
+
+{% endblock js_plugins %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

@@ -6,13 +6,13 @@ from flask import request,session
 from flask import flash
 import firebase_admin
 from firebase_admin import credentials
-from firebase_admin import firestore
-from controller.supervisor import get_supervisors
+from controller.supervisor import get_supervisors, upload_image_and_data
 
-from controller.supervisor import get_supervisors
 
 cred = credentials.Certificate("serviceAccountKey.json")
-firebase_admin.initialize_app(cred)
+firebase_admin.initialize_app(cred, {
+    'storageBucket': "pgms-65b22.appspot.com"
+})
 
 
 config = {
@@ -48,11 +48,28 @@ def login_required(f):
 def home():
     return render_template('base.html')
 
-@app.route("/supervisor")
+@app.route("/supervisor", methods=['GET'])
 @login_required
 def supervisor():
     sups = get_supervisors()
     return render_template('supervisor.html',sups = sups)
+
+@app.route("/addsupervisor", methods=['GET','POST'])
+@login_required
+def addsupervisor():
+    profile = None
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        ward = request.form['ward']
+        phoneno = request.form['phoneno']
+        if 'profile' in request.files:
+            profile = request.files['profile']
+        dob = request.form['dob']
+        upload_image_and_data(profile, name, email, ward, phoneno, dob)
+        flash("Supervisor Added Successfully!!", 'success')
+        return redirect(url_for('supervisor'))
+    return render_template('add-supervisor.html')
     
 @app.route("/login", methods=['GET','POST'])
 def login():
