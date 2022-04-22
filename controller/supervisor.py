@@ -9,6 +9,7 @@ def get_supervisors():
     result=[]
     for doc in docs:
         result.append(doc.to_dict())
+    db.close()
     return result
 
 def upload_image_and_data(file, name, email, ward, phoneno, dob):
