@@ -6,9 +6,11 @@ def fetch_complaints(complaintType):
     result=[]
     for doc in docs:
         res = doc.to_dict()
+        if(complaintType=='All Complaints'):
+            result.append(res)
         if(res['status']==complaintType):
             result.append(res)
     db.close()
-    print("result")
-    print(result)
+    # print("result")
+    # print(result)
     return result

@@ -10,78 +10,108 @@
 
 {% block content %} 
 
-  <!-- <style>
-    .social_icons{
-      display: inline-block
-    }
-  </style> -->
-  <div class="content-wrapper">
+  
+  <div class="content-wrapper h-screen">
     <div class="row">
-      <!-- <div class="col-lg-6 grid-margin stretch-card">
-        <div class="card">
-          <div class="card-body">
-            <h4 class="card-title">Basic Table</h4>
-            <p class="card-description">
-              Add class <code>.table</code>
-            </p>
-            <div class="table-responsive">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Profile</th>
-                    <th>VatNo.</th>
-                    <th>Created</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Jacob</td>
-                    <td>53275531</td>
-                    <td>12 May 2017</td>
-                    <td><label class="badge badge-danger">Pending</label></td>
-                  </tr>
-                  <tr>
-                    <td>Messsy</td>
-                    <td>53275532</td>
-                    <td>15 May 2017</td>
-                    <td><label class="badge badge-warning">In progress</label></td>
-                  </tr>
-                  <tr>
-                    <td>John</td>
-                    <td>53275533</td>
-                    <td>14 May 2017</td>
-                    <td><label class="badge badge-info">Fixed</label></td>
-                  </tr>
-                  <tr>
-                    <td>Peter</td>
-                    <td>53275534</td>
-                    <td>16 May 2017</td>
-                    <td><label class="badge badge-success">Completed</label></td>
-                  </tr>
-                  <tr>
-                    <td>Dave</td>
-                    <td>53275535</td>
-                    <td>20 May 2017</td>
-                    <td><label class="badge badge-warning">In progress</label></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div> -->
-      
       <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
-          <div class="card-body">
-            
-              <h4 class="card-title">Complaints</h4>
+          <div class="card-body" >
+
+              <div class="flex justify-between">
+                <h4 class="card-title">Complaints</h4>
+                <li class="nav-item dropdown d-none d-lg-block">
+                  <a class="nav-link dropdown-bordered dropdown-toggle dropdown-toggle-split" id="messageDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false"> 
+                    <div class="col-sm-6 col-md-3 col-lg-6" >
+                      <i class="mdi mdi-filter" style="font-size: 1.5rem;"></i>
+                    </div>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0" aria-labelledby="messageDropdown">
+                    <!-- <a class="dropdown-item py-3" >
+                      <!-- <p class="mb-0 font-weight-medium float-left">Select category</p> -->
+                      <!-- <div class="col-sm-6 col-md-3 col-lg-6" >
+                        <i class="mdi mdi-filter"></i>
+                      </div> -->
+                    <!-- </a> -->
+                    <!-- <div class="dropdown-divider"></div> -->
+                    <a class="dropdown-item preview-item" href="{{url_for('complaintsFunction',complaintType='All Complaints')}}">
+                      <div class="preview-item-content flex-grow py-2">
+                        
+                        
+                          <p class="preview-subject ellipsis font-weight-medium text-dark">
+                            <!-- <a "> -->
+                              All Complaints
+                            <!-- </a> -->
+                          </p>
+                        
+                        <!-- <p class="fw-light small-text mb-0">This is a Bundle featuring 16 unique dashboards</p> -->
+                      </div>
+                    </a>
+                    <a class="dropdown-item preview-item" href="{{url_for('complaintsFunction',complaintType='In Progress')}}">
+                      <div class="preview-item-content flex-grow py-2">
+                        
+                        
+                          <p class="preview-subject ellipsis font-weight-medium text-dark">
+                            <!-- <a "> -->
+                              In Progress
+                            <!-- </a> -->
+                          </p>
+                        
+                        <!-- <p class="fw-light small-text mb-0">This is a Bundle featuring 16 unique dashboards</p> -->
+                      </div>
+                    </a>
+                    <a class="dropdown-item preview-item" href="{{url_for('complaintsFunction',complaintType='Resolved')}}">
+                      <div class="preview-item-content flex-grow py-2">
+                        
+                          <!-- <a href="{{url_for('complaintsFunction',complaintType='Resolved')}}"> -->
+                            <p class="preview-subject ellipsis font-weight-medium text-dark"></p>
+                              Resolved
+                            </p>
+                          <!-- </a> -->
+                        
+                        <!-- <p class="fw-light small-text mb-0">Everything you’ll ever need for your Angular projects</p> -->
+                      </div>
+                    </a>
+                    <a class="dropdown-item preview-item" href="{{url_for('complaintsFunction',complaintType='Closed')}}">
+                      <div class="preview-item-content flex-grow py-2">
+                        
+                          <!-- <a href="{{url_for('complaintsFunction',complaintType='Closed')}}"> -->
+                            <p class="preview-subject ellipsis font-weight-medium text-dark"></p>
+                              Closed
+                            </p>
+                          <!-- </a> -->
+                        
+                        <!-- <p class="fw-light small-text mb-0">Bundle of 6 Premium Vue Admin Dashboard</p> -->
+                      </div>
+                    </a>
+                    <a class="dropdown-item preview-item" href="{{url_for('complaintsFunction',complaintType='Rejected')}}">
+                      <div class="preview-item-content flex-grow py-2">
+                        <p class="preview-subject ellipsis font-weight-medium text-dark">
+                          <!-- <a href="{{url_for('complaintsFunction',complaintType='Rejected')}}"> -->
+                            Rejected
+                          <!-- </a> -->
+                        </p>
+                        <!-- <p class="fw-light small-text mb-0">Bundle of 8 Premium React Admin Dashboard</p> -->
+                      </div>
+                    </a>
+                    <a class="dropdown-item preview-item" href="{{url_for('complaintsFunction',complaintType='Issue Reported')}}">
+                      <div class="preview-item-content flex-grow py-2">
+                        <p class="preview-subject ellipsis font-weight-medium text-dark">
+                          <!-- <a href="{{url_for('complaintsFunction',complaintType='Issue Reported')}}"> -->
+                            Issue Reported
+                          <!-- </a> -->
+                        </p>
+                        <!-- <p class="fw-light small-text mb-0">Bundle of 8 Premium React Admin Dashboard</p> -->
+                      </div>
+                    </a>
+                  </div>
+                </li>
+              </div>
+              
               <!-- <div class="col-sm-6 col-md-3 col-lg-6" >
                 <i class="mdi mdi-filter"></i>
               </div> -->
 
-              <li class="nav-item dropdown d-none d-lg-block">
+              <!-- <li class="nav-item dropdown d-none d-lg-block">
                 <a class="nav-link dropdown-bordered dropdown-toggle dropdown-toggle-split" id="messageDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false"> 
                   <div class="col-sm-6 col-md-3 col-lg-6" >
                     <i class="mdi mdi-filter"></i>
@@ -95,65 +125,78 @@
                     </div> -->
                   <!-- </a> -->
                   <!-- <div class="dropdown-divider"></div> -->
+                  <!-- <a class="dropdown-item preview-item" href="{{url_for('complaintsFunction',complaintType='All Complaints')}}">
+                    <div class="preview-item-content flex-grow py-2">
+                      
+                      
+                        <p class="preview-subject ellipsis font-weight-medium text-dark">
+                          
+                            All Complaints
+                          
+                        </p>
+                      
+                      
+                    </div>
+                  </a>
                   <a class="dropdown-item preview-item" href="{{url_for('complaintsFunction',complaintType='In Progress')}}">
                     <div class="preview-item-content flex-grow py-2">
                       
                       
                         <p class="preview-subject ellipsis font-weight-medium text-dark">
-                          <!-- <a "> -->
+                          
                             In Progress
-                          <!-- </a> -->
+                          
                         </p>
                       
-                      <!-- <p class="fw-light small-text mb-0">This is a Bundle featuring 16 unique dashboards</p> -->
+                      
                     </div>
                   </a>
                   <a class="dropdown-item preview-item" href="{{url_for('complaintsFunction',complaintType='Resolved')}}">
                     <div class="preview-item-content flex-grow py-2">
                       
-                        <!-- <a href="{{url_for('complaintsFunction',complaintType='Resolved')}}"> -->
+                        
                           <p class="preview-subject ellipsis font-weight-medium text-dark"></p>
                             Resolved
                           </p>
-                        <!-- </a> -->
+                        
                       
-                      <!-- <p class="fw-light small-text mb-0">Everything you’ll ever need for your Angular projects</p> -->
+                      
                     </div>
                   </a>
                   <a class="dropdown-item preview-item" href="{{url_for('complaintsFunction',complaintType='Closed')}}">
                     <div class="preview-item-content flex-grow py-2">
                       
-                        <!-- <a href="{{url_for('complaintsFunction',complaintType='Closed')}}"> -->
+                        
                           <p class="preview-subject ellipsis font-weight-medium text-dark"></p>
                             Closed
                           </p>
-                        <!-- </a> -->
+                        
                       
-                      <!-- <p class="fw-light small-text mb-0">Bundle of 6 Premium Vue Admin Dashboard</p> -->
+                      
                     </div>
                   </a>
                   <a class="dropdown-item preview-item" href="{{url_for('complaintsFunction',complaintType='Rejected')}}">
                     <div class="preview-item-content flex-grow py-2">
                       <p class="preview-subject ellipsis font-weight-medium text-dark">
-                        <!-- <a href="{{url_for('complaintsFunction',complaintType='Rejected')}}"> -->
+                        
                           Rejected
-                        <!-- </a> -->
+                        
                       </p>
-                      <!-- <p class="fw-light small-text mb-0">Bundle of 8 Premium React Admin Dashboard</p> -->
+                      
                     </div>
-                  </a>
-                  <a class="dropdown-item preview-item" href="{{url_for('complaintsFunction',complaintType='Issue Reported')}}">
+                  </a> -->
+                  <!-- <a class="dropdown-item preview-item" href="{{url_for('complaintsFunction',complaintType='Issue Reported')}}">
                     <div class="preview-item-content flex-grow py-2">
                       <p class="preview-subject ellipsis font-weight-medium text-dark">
-                        <!-- <a href="{{url_for('complaintsFunction',complaintType='Issue Reported')}}"> -->
+                        
                           Issue Reported
-                        <!-- </a> -->
+                        
                       </p>
-                      <!-- <p class="fw-light small-text mb-0">Bundle of 8 Premium React Admin Dashboard</p> -->
+                      
                     </div>
                   </a>
                 </div>
-              </li>
+              </li> -->
 
 
           
@@ -161,7 +204,7 @@
               All Registered Citizen Complaints
             </p>
             <div class="table-responsive">
-              <table class="table table-hover">
+              <table class="table table-hover searchable sortable">
                 <thead>
                   <tr>
                     <th>Complaint</th>
@@ -191,13 +234,13 @@
 
                   {% for comp in comps %}
                     <tr>
-                      <td>{{ comp['complaint'] }}</td>
-                      <td>{{ comp['citizenEmail'] }}</td>
-                      <td>{{ comp['dateTime'] }}</td>
-                      <td>{{ comp['ward'] }}</td>
-                      <td>{{ comp['overdue'] }}</td>
-                      <td>{{ comp['supervisorEmail'] }}</td>
-                      <td class="text-danger">{{ comp['upvoteCount'] }}<i class="ti-arrow-up"></i></td>
+                      <td >{{ comp['complaint'] }}</td>
+                      <td >{{ comp['citizenEmail'] }}</td>
+                      <td >{{ comp['dateTime'] }}</td>
+                      <td >{{ comp['ward'] }}</td>
+                      <td >{{ comp['overdue'] }}</td>
+                      <td >{{ comp['supervisorEmail'] }}</td>
+                      <td class="text-danger" style="text-align: center;">{{ comp['upvoteCount'] }}</td>
 
                       {% if comp['status']=='In Progress'%}
                         <td><label class="badge badge-info">{{ comp['status'] }}</label></td>
