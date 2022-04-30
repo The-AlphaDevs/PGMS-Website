@@ -54,7 +54,12 @@ def complaintsFunction(complaintType):
     comps = fetch_complaints(complaintType)
     return render_template("complaints_table.html", comps=comps)
 
-    
+@app.route("/detailed-complaint", methods=['GET'])
+@login_required
+def detailedComplaint():
+    return render_template("detailed_complaint.html")
+
+
 @app.route("/login", methods=['GET','POST'])
 def login():
     if request.method =='POST':

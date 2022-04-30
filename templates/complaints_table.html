@@ -233,13 +233,17 @@
                   {% endif %}
 
                   {% for comp in comps %}
+                  
                     <tr>
-                      <td >{{ comp['complaint'] }}</td>
-                      <td >{{ comp['citizenEmail'] }}</td>
-                      <td >{{ comp['dateTime'] }}</td>
-                      <td >{{ comp['ward'] }}</td>
-                      <td >{{ comp['overdue'] }}</td>
-                      <td >{{ comp['supervisorEmail'] }}</td>
+                      <!-- <a href="{{url_for('detailedComplaint')}}">
+                        
+                      </a> -->
+                      <td><a href="{{url_for('detailedComplaint')}}">{{ comp['complaint'] }}</a></td>
+                      <td>{{ comp['citizenEmail'] }}</td>
+                      <td>{{ comp['dateTime'] }}</td>
+                      <td>{{ comp['ward'] }}</td>
+                      <td>{{ comp['overdue'] }}</td>
+                      <td>{{ comp['supervisorEmail'] }}</td>
                       <td class="text-danger" style="text-align: center;">{{ comp['upvoteCount'] }}</td>
 
                       {% if comp['status']=='In Progress'%}
@@ -256,8 +260,10 @@
                       {% endif %}
                       {% if comp['status']=='Issue Reported'%}
                         <td><label class="badge badge-warning">{{ comp['status'] }}</label></td>
-                      {% endif %}  
+                      {% endif %} 
+                    
                     </tr>
+                  
                   {% endfor %}  
 
                 </tbody>
