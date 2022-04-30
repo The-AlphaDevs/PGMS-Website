@@ -3481,6 +3481,14 @@ textarea.is-invalid.tt-hint {
   font-size: 0.875rem;
   border-radius: 0.1875rem; }
 
+#display-image{
+  width: 400px;
+  height: 225px;
+  border: 1px solid black;
+  background-position: center;
+  background-size: cover;
+}
+
 .btn-sm, .btn-group-sm > .btn, .ajax-upload-dragdrop .btn-group-sm > .ajax-file-upload, .swal2-modal .swal2-buttonswrapper .btn-group-sm > .swal2-styled {
   padding: 0.5rem 0.81rem;
   font-size: 0.812rem;
