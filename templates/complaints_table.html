@@ -1,0 +1,288 @@
+{% extends "base-fullscreen.html" %}
+
+{% block title %} Basic Table {% endblock %} 
+
+<!-- Specific CSS Plugins goes HERE  -->
+{% block css_plugins %}<script src="https://cdn.tailwindcss.com"></script>{% endblock css_plugins %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %} 
+
+  
+  <div class="content-wrapper h-screen">
+    <div class="row">
+      <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body" >
+
+              <div class="flex justify-between">
+                <h4 class="card-title">Complaints</h4>
+                <li class="nav-item dropdown d-none d-lg-block">
+                  <a class="nav-link dropdown-bordered dropdown-toggle dropdown-toggle-split" id="messageDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false"> 
+                    <div class="col-sm-6 col-md-3 col-lg-6" >
+                      <i class="mdi mdi-filter" style="font-size: 1.5rem;"></i>
+                    </div>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0" aria-labelledby="messageDropdown">
+                    <!-- <a class="dropdown-item py-3" >
+                      <!-- <p class="mb-0 font-weight-medium float-left">Select category</p> -->
+                      <!-- <div class="col-sm-6 col-md-3 col-lg-6" >
+                        <i class="mdi mdi-filter"></i>
+                      </div> -->
+                    <!-- </a> -->
+                    <!-- <div class="dropdown-divider"></div> -->
+                    <a class="dropdown-item preview-item" href="{{url_for('complaintsFunction',complaintType='All Complaints')}}">
+                      <div class="preview-item-content flex-grow py-2">
+                        
+                        
+                          <p class="preview-subject ellipsis font-weight-medium text-dark">
+                            <!-- <a "> -->
+                              All Complaints
+                            <!-- </a> -->
+                          </p>
+                        
+                        <!-- <p class="fw-light small-text mb-0">This is a Bundle featuring 16 unique dashboards</p> -->
+                      </div>
+                    </a>
+                    <a class="dropdown-item preview-item" href="{{url_for('complaintsFunction',complaintType='In Progress')}}">
+                      <div class="preview-item-content flex-grow py-2">
+                        
+                        
+                          <p class="preview-subject ellipsis font-weight-medium text-dark">
+                            <!-- <a "> -->
+                              In Progress
+                            <!-- </a> -->
+                          </p>
+                        
+                        <!-- <p class="fw-light small-text mb-0">This is a Bundle featuring 16 unique dashboards</p> -->
+                      </div>
+                    </a>
+                    <a class="dropdown-item preview-item" href="{{url_for('complaintsFunction',complaintType='Resolved')}}">
+                      <div class="preview-item-content flex-grow py-2">
+                        
+                          <!-- <a href="{{url_for('complaintsFunction',complaintType='Resolved')}}"> -->
+                            <p class="preview-subject ellipsis font-weight-medium text-dark"></p>
+                              Resolved
+                            </p>
+                          <!-- </a> -->
+                        
+                        <!-- <p class="fw-light small-text mb-0">Everything you’ll ever need for your Angular projects</p> -->
+                      </div>
+                    </a>
+                    <a class="dropdown-item preview-item" href="{{url_for('complaintsFunction',complaintType='Closed')}}">
+                      <div class="preview-item-content flex-grow py-2">
+                        
+                          <!-- <a href="{{url_for('complaintsFunction',complaintType='Closed')}}"> -->
+                            <p class="preview-subject ellipsis font-weight-medium text-dark"></p>
+                              Closed
+                            </p>
+                          <!-- </a> -->
+                        
+                        <!-- <p class="fw-light small-text mb-0">Bundle of 6 Premium Vue Admin Dashboard</p> -->
+                      </div>
+                    </a>
+                    <a class="dropdown-item preview-item" href="{{url_for('complaintsFunction',complaintType='Rejected')}}">
+                      <div class="preview-item-content flex-grow py-2">
+                        <p class="preview-subject ellipsis font-weight-medium text-dark">
+                          <!-- <a href="{{url_for('complaintsFunction',complaintType='Rejected')}}"> -->
+                            Rejected
+                          <!-- </a> -->
+                        </p>
+                        <!-- <p class="fw-light small-text mb-0">Bundle of 8 Premium React Admin Dashboard</p> -->
+                      </div>
+                    </a>
+                    <a class="dropdown-item preview-item" href="{{url_for('complaintsFunction',complaintType='Issue Reported')}}">
+                      <div class="preview-item-content flex-grow py-2">
+                        <p class="preview-subject ellipsis font-weight-medium text-dark">
+                          <!-- <a href="{{url_for('complaintsFunction',complaintType='Issue Reported')}}"> -->
+                            Issue Reported
+                          <!-- </a> -->
+                        </p>
+                        <!-- <p class="fw-light small-text mb-0">Bundle of 8 Premium React Admin Dashboard</p> -->
+                      </div>
+                    </a>
+                  </div>
+                </li>
+              </div>
+              
+              <!-- <div class="col-sm-6 col-md-3 col-lg-6" >
+                <i class="mdi mdi-filter"></i>
+              </div> -->
+
+              <!-- <li class="nav-item dropdown d-none d-lg-block">
+                <a class="nav-link dropdown-bordered dropdown-toggle dropdown-toggle-split" id="messageDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false"> 
+                  <div class="col-sm-6 col-md-3 col-lg-6" >
+                    <i class="mdi mdi-filter"></i>
+                  </div>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0" aria-labelledby="messageDropdown">
+                  <!-- <a class="dropdown-item py-3" >
+                    <!-- <p class="mb-0 font-weight-medium float-left">Select category</p> -->
+                    <!-- <div class="col-sm-6 col-md-3 col-lg-6" >
+                      <i class="mdi mdi-filter"></i>
+                    </div> -->
+                  <!-- </a> -->
+                  <!-- <div class="dropdown-divider"></div> -->
+                  <!-- <a class="dropdown-item preview-item" href="{{url_for('complaintsFunction',complaintType='All Complaints')}}">
+                    <div class="preview-item-content flex-grow py-2">
+                      
+                      
+                        <p class="preview-subject ellipsis font-weight-medium text-dark">
+                          
+                            All Complaints
+                          
+                        </p>
+                      
+                      
+                    </div>
+                  </a>
+                  <a class="dropdown-item preview-item" href="{{url_for('complaintsFunction',complaintType='In Progress')}}">
+                    <div class="preview-item-content flex-grow py-2">
+                      
+                      
+                        <p class="preview-subject ellipsis font-weight-medium text-dark">
+                          
+                            In Progress
+                          
+                        </p>
+                      
+                      
+                    </div>
+                  </a>
+                  <a class="dropdown-item preview-item" href="{{url_for('complaintsFunction',complaintType='Resolved')}}">
+                    <div class="preview-item-content flex-grow py-2">
+                      
+                        
+                          <p class="preview-subject ellipsis font-weight-medium text-dark"></p>
+                            Resolved
+                          </p>
+                        
+                      
+                      
+                    </div>
+                  </a>
+                  <a class="dropdown-item preview-item" href="{{url_for('complaintsFunction',complaintType='Closed')}}">
+                    <div class="preview-item-content flex-grow py-2">
+                      
+                        
+                          <p class="preview-subject ellipsis font-weight-medium text-dark"></p>
+                            Closed
+                          </p>
+                        
+                      
+                      
+                    </div>
+                  </a>
+                  <a class="dropdown-item preview-item" href="{{url_for('complaintsFunction',complaintType='Rejected')}}">
+                    <div class="preview-item-content flex-grow py-2">
+                      <p class="preview-subject ellipsis font-weight-medium text-dark">
+                        
+                          Rejected
+                        
+                      </p>
+                      
+                    </div>
+                  </a> -->
+                  <!-- <a class="dropdown-item preview-item" href="{{url_for('complaintsFunction',complaintType='Issue Reported')}}">
+                    <div class="preview-item-content flex-grow py-2">
+                      <p class="preview-subject ellipsis font-weight-medium text-dark">
+                        
+                          Issue Reported
+                        
+                      </p>
+                      
+                    </div>
+                  </a>
+                </div>
+              </li> -->
+
+
+          
+            <p class="card-description">
+              All Registered Citizen Complaints
+            </p>
+            <div class="table-responsive">
+              <table class="table table-hover searchable sortable">
+                <thead>
+                  <tr>
+                    <th>Complaint</th>
+                    <th>Citizen Email</th>
+                    <th>Date & Time</th>
+                    <th>Ward</th>
+                    <th>Overdue</th>
+                    <th>Supervisor Email</th>
+                    <th>Upvote Count</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  {% if comps|length==0 %}
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>No</td>
+                      <td>Results</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                  {% endif %}
+
+                  {% for comp in comps %}
+                  
+                    <tr>
+                      <!-- <a href="{{url_for('detailedComplaint')}}">
+                        
+                      </a> -->
+                      <td><a href="{{url_for('detailedComplaint')}}">{{ comp['complaint'] }}</a></td>
+                      <td>{{ comp['citizenEmail'] }}</td>
+                      <td>{{ comp['dateTime'] }}</td>
+                      <td>{{ comp['ward'] }}</td>
+                      <td>{{ comp['overdue'] }}</td>
+                      <td>{{ comp['supervisorEmail'] }}</td>
+                      <td class="text-danger" style="text-align: center;">{{ comp['upvoteCount'] }}</td>
+
+                      {% if comp['status']=='In Progress'%}
+                        <td><label class="badge badge-info">{{ comp['status'] }}</label></td>
+                      {% endif %}
+                      {% if comp['status']=='Closed'%}
+                        <td><label class="badge badge-danger">{{ comp['status'] }}</label></td>
+                      {% endif %}
+                      {% if comp['status']=='Resolved'%}
+                        <td><label class="badge badge-success">{{ comp['status'] }}</label></td>
+                      {% endif %}
+                      {% if comp['status']=='Rejected'%}
+                        <td><label class="badge badge-danger">{{ comp['status'] }}</label></td>
+                      {% endif %}
+                      {% if comp['status']=='Issue Reported'%}
+                        <td><label class="badge badge-warning">{{ comp['status'] }}</label></td>
+                      {% endif %} 
+                    
+                    </tr>
+                  
+                  {% endfor %}  
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock content %}
+
+<!-- Specific JS Plugins goes HERE  -->
+{% block js_plugins %}
+
+  <script src="/static/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+
+{% endblock js_plugins %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}
