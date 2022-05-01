@@ -7,6 +7,7 @@ from flask import flash
 import firebase_admin
 from firebase_admin import credentials
 from controller.supervisor import get_supervisors, upload_image_and_data
+from controller.stats import get_complaints
 
 
 cred = credentials.Certificate("serviceAccountKey.json")
@@ -46,7 +47,8 @@ def login_required(f):
 @app.route("/home")
 @login_required
 def home():
-    return render_template('base.html')
+    complaints = get_complaints()
+    return render_template('home.html.jinja', complaints=complaints)
 
 @app.route("/supervisor", methods=['GET'])
 @login_required

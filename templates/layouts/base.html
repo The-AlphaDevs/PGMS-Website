@@ -7,17 +7,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 <title>
-  {% block title %}{% endblock title %}
+    Flask Star Admin - {% block title %}{% endblock %} | AppSeed
 </title>
 
   <!-- plugins:css -->
+  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="/static/assets/vendors/feather/feather.css">
   <link rel="stylesheet" href="/static/assets/vendors/mdi/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="/static/assets/vendors/ti-icons/css/themify-icons.css">
   <link rel="stylesheet" href="/static/assets/vendors/typicons/typicons.css">
   <link rel="stylesheet" href="/static/assets/vendors/simple-line-icons/css/simple-line-icons.css">
   <link rel="stylesheet" href="/static/assets/vendors/css/vendor.bundle.base.css">
-  <script src="https://cdn.tailwindcss.com"></script>
+
   <!-- Specific CSS Plugins goes HERE  -->
   {% block css_plugins %}{% endblock css_plugins %}
 
@@ -35,12 +36,16 @@
 
     <div class="container-fluid page-body-wrapper">
       
+      {% include 'includes/right-sidebar.html' %}
+
       {% include 'includes/sidebar.html' %}
 
       <div class="main-panel">
 
         {% block content %}{% endblock content %}
         
+        {% include 'includes/footer.html' %}
+
       </div>
       <!-- main-panel ends -->
     </div>
