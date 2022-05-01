@@ -14,6 +14,21 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
+        <main role="main" class="container">
+            <div class="row">
+            <div class="col-md-8">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                {% endif %}
+                {% endwith %}
+            </div>
+            </div>
+        </main>
 <style>
     #display-image{
         width: 400px;
@@ -57,7 +72,7 @@
                 <input type="text" name="dob" class="form-control" id="exampleInputDOB1" placeholder="Date of Birth" required>
               </div>
               <button type="submit" class="btn btn-primary me-2">Submit</button>
-              <button class="btn btn-light">Cancel</button>
+              <a class="btn btn-light" href="{{ url_for('supervisor') }}">Cancel</a>
             </form>
           </div>
         </div>
