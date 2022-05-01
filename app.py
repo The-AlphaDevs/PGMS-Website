@@ -3,9 +3,10 @@ from flask import Flask
 from flask import redirect, url_for, render_template
 import pyrebase
 from flask import request,session
-from flask import flash
 import firebase_admin
 from firebase_admin import credentials
+from flask import flash
+from controller.complaints import fetch_complaints
 from controller.supervisor import get_supervisors, upload_image_and_data
 from controller.stats import get_complaints
 from controller.complaints import fetch_complaints
@@ -15,7 +16,6 @@ cred = credentials.Certificate("serviceAccountKey.json")
 firebase_admin.initialize_app(cred, {
     'storageBucket': "pgms-65b22.appspot.com"
 })
-
 
 config = {
     "apiKey": "AIzaSyAO50b9Y1qkVB79BTW29SqKaiIt0VkS238",
@@ -64,6 +64,20 @@ def detailedComplaint():
 
 
 
+
+@app.route("/complaints/<complaintType>", methods=['GET'])
+@login_required
+def complaintsFunction(complaintType):
+    comps = fetch_complaints(complaintType)
+    return render_template("complaints_table.html", comps=comps)
+
+@app.route("/detailed-complaint", methods=['GET'])
+@login_required
+def detailedComplaint():
+    return render_template("detailed_complaint.html")
+
+
+
 @app.route("/supervisor", methods=['GET'])
 @login_required
 def supervisor():
@@ -87,6 +101,7 @@ def addsupervisor():
         return redirect(url_for('supervisor'))
     return render_template('add-supervisor.html')
     
+
 @app.route("/login", methods=['GET','POST'])
 def login():
     if request.method =='POST':
@@ -96,7 +111,7 @@ def login():
             auth.sign_in_with_email_and_password(email, password)
             session['email'] = email
             flash("Login Successfull!!", 'success')
-            return redirect(url_for('home'))
+            return redirect(url_for('complaintsFunction'))
         except:
             flash("Login Unsuccessfull!!", 'danger')
             return redirect(url_for('login'))
