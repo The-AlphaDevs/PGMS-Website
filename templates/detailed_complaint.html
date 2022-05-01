@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+
+{% block title %} Basic Table {% endblock %} 
+
+<!-- Specific CSS Plugins goes HERE  -->
+{% block css_plugins %} <script src="https://cdn.tailwindcss.com"></script>{% endblock css_plugins %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+
+
+  <div class="content-wrapper">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="home-tab">
+          
+          <div class="tab-content tab-content-basic">
+            <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview"> 
+              
+
+                <div class="row flex justify-between">
+                    <div class="col-6 grid-margin stretch-card">
+                      <div class="card card-rounded">
+                        <div class="card-body">
+                          <div class="d-sm-flex justify-content-between align-items-start">
+                            <div>
+                              <h4 class="card-title card-title-dash">Citizen Image</h4>
+                              <p class="card-subtitle card-subtitle-dash">You have 50+ new requests</p>
+                            </div>
+                            <!-- <div>
+                              <button class="btn btn-primary btn-lg text-white mb-0 me-0" type="button"><i class="mdi mdi-account-plus"></i>Add new member</button>
+                            </div> -->
+                          </div>
+                          <!-- <div> -->
+                            <img src="..\static\assets\images\dashboard\profile-card.jpg" alt="citizen image">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-6 grid-margin stretch-card">
+                        <div class="card card-rounded">
+                          <div class="card-body">
+                            <div class="d-sm-flex justify-content-between align-items-start">
+                              <div>
+                                <h4 class="card-title card-title-dash">Supervisor Image</h4>
+                                <p class="card-subtitle card-subtitle-dash">You have 50+ new requests</p>
+                              </div>
+                              <!-- <div>
+                                <button class="btn btn-primary btn-lg text-white mb-0 me-0" type="button"><i class="mdi mdi-account-plus"></i>Add new member</button>
+                              </div> -->
+                            </div>
+                            <!-- <div> -->
+                              <img src="..\static\assets\images\dashboard\profile-card.jpg" alt="supervisor image">
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+
+              <div class="row flex justify-between">
+
+                
+                  
+                    <div class="col-8 grid-margin stretch-card">
+                      <div class="card card-rounded">
+                        <div class="card-body">
+                          <div class="d-sm-flex justify-content-between align-items-start">
+                            <div>
+                              <h4 class="card-title card-title-dash">Market Overview</h4>
+                              <p class="card-subtitle card-subtitle-dash">Lorem ipsum dolor sit amet consectetur adipisicing elit</p>
+                            </div>
+                            <div>
+                              <!-- <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle toggle-dark btn-lg mb-0 me-0" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> This month </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                  <h6 class="dropdown-header">Settings</h6>
+                                  <a class="dropdown-item" href="#">Action</a>
+                                  <a class="dropdown-item" href="#">Another action</a>
+                                  <a class="dropdown-item" href="#">Something else here</a>
+                                  <div class="dropdown-divider"></div>
+                                  <a class="dropdown-item" href="#">Separated link</a>
+                                </div>
+                              </div> -->
+                              <ul class="nav nav-tabs">
+                                <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
+                                <li><a data-toggle="tab" href="#menu1">Menu 1</a></li>
+                                <li><a data-toggle="tab" href="#menu2">Menu 2</a></li>
+                              </ul>
+                              
+                              <div class="tab-content">
+                                <div id="home" class="tab-pane fade in active">
+                                  <h3>HOME</h3>
+                                  <p>Some content.</p>
+                                </div>
+                                <div id="menu1" class="tab-pane fade">
+                                  <h3>Menu 1</h3>
+                                  <p>Some content in menu 1.</p>
+                                </div>
+                                <div id="menu2" class="tab-pane fade">
+                                  <h3>Menu 2</h3>
+                                  <p>Some content in menu 2.</p>
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+                          <!-- <div class="d-sm-flex align-items-center mt-1 justify-content-between">
+                            <div class="d-sm-flex align-items-center mt-4 justify-content-between"><h2 class="me-2 fw-bold">$36,2531.00</h2><h4 class="me-2">USD</h4><h4 class="text-success">(+1.37%)</h4></div>
+                            <div class="me-3"><div id="marketing-overview-legend"></div></div>
+                          </div> -->
+                          <!-- <div class="chartjs-bar-wrapper mt-3">
+                            <canvas id="marketingOverview"></canvas>
+                          </div> -->
+                        </div>
+                      </div>
+                    </div>
+                  
+                
+
+                <div class="col-md-8 col-lg-4 grid-margin stretch-card">
+                    <div class="card card-rounded">
+                      <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                          <h4 class="card-title card-title-dash">Activities</h4>
+                          <p class="mb-0">20 finished, 5 remaining</p>
+                        </div>
+                        <ul class="bullet-line-list">
+                          <li>
+                            <div class="d-flex justify-content-between">
+                              <div><span class="text-light-green">Ben Tossell</span> assign you a task</div>
+                              <p>Just now</p>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="d-flex justify-content-between">
+                              <div><span class="text-light-green">Oliver Noah</span> assign you a task</div>
+                              <p>1h</p>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="d-flex justify-content-between">
+                              <div><span class="text-light-green">Jack William</span> assign you a task</div>
+                              <p>1h</p>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="d-flex justify-content-between">
+                              <div><span class="text-light-green">Leo Lucas</span> assign you a task</div>
+                              <p>1h</p>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="d-flex justify-content-between">
+                              <div><span class="text-light-green">Thomas Henry</span> assign you a task</div>
+                              <p>1h</p>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="d-flex justify-content-between">
+                              <div><span class="text-light-green">Ben Tossell</span> assign you a task</div>
+                              <p>1h</p>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="d-flex justify-content-between">
+                              <div><span class="text-light-green">Ben Tossell</span> assign you a task</div>
+                              <p>1h</p>
+                            </div>
+                          </li>
+                        </ul>
+                        <div class="list align-items-center pt-3">
+                          <div class="wrapper w-100">
+                            <p class="mb-0">
+                              <a href="#" class="fw-bold text-primary">Show all <i class="mdi mdi-arrow-right ms-2"></i></a>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+
+              <div class="col-8 grid-margin stretch-card">
+                <div class="card card-rounded">
+                  <div class="card-body">
+                    <div class="d-sm-flex justify-content-between align-items-start">
+                      <div>
+                        <h4 class="card-title card-title-dash">Market Overview</h4>
+                        <p class="card-subtitle card-subtitle-dash">Lorem ipsum dolor sit amet consectetur adipisicing elit</p>
+                      </div>
+                      <div>
+                        <!-- <div class="dropdown">
+                          <button class="btn btn-secondary dropdown-toggle toggle-dark btn-lg mb-0 me-0" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> This month </button>
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                            <h6 class="dropdown-header">Settings</h6>
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Separated link</a>
+                          </div>
+                        </div> -->
+                      </div>
+                    </div>
+                    <!-- <div class="d-sm-flex align-items-center mt-1 justify-content-between">
+                      <div class="d-sm-flex align-items-center mt-4 justify-content-between"><h2 class="me-2 fw-bold">$36,2531.00</h2><h4 class="me-2">USD</h4><h4 class="text-success">(+1.37%)</h4></div>
+                      <div class="me-3"><div id="marketing-overview-legend"></div></div>
+                    </div> -->
+                    <!-- <div class="chartjs-bar-wrapper mt-3">
+                      <canvas id="marketingOverview"></canvas>
+                    </div> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock content %}
+
+<!-- Specific JS Plugins goes HERE  -->
+{% block js_plugins %}
+
+  <script src="/static/assets/vendors/chart.js/Chart.min.js"></script>
+  <script src="/static/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+  <script src="/static/assets/vendors/progressbar.js/progressbar.min.js"></script>
+
+{% endblock js_plugins %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <script src="/static/assets/js/dashboard.js"></script>
+  <script src="/static/assets/js/Chart.roundedBarCharts.js"></script>
+
+{% endblock javascripts %}

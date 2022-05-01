@@ -8,6 +8,7 @@ import firebase_admin
 from firebase_admin import credentials
 from controller.supervisor import get_supervisors, upload_image_and_data
 from controller.stats import get_complaints
+from controller.complaints import fetch_complaints
 
 
 cred = credentials.Certificate("serviceAccountKey.json")
@@ -49,6 +50,19 @@ def login_required(f):
 def home():
     complaints = get_complaints()
     return render_template('home.html.jinja', complaints=complaints)
+
+@app.route("/complaints/<complaintType>", methods=['GET'])
+@login_required
+def complaintsFunction(complaintType):
+    comps = fetch_complaints(complaintType)
+    return render_template("complaints_table.html", comps=comps)
+
+@app.route("/detailed-complaint", methods=['GET'])
+@login_required
+def detailedComplaint():
+    return render_template("detailed_complaint.html")
+
+
 
 @app.route("/supervisor", methods=['GET'])
 @login_required
