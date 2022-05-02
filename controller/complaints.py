@@ -24,3 +24,7 @@ def fetch_single_complaint(complaintID):
             break
     db.close()
     return result
+
+def closeComplaint(complaintID):
+    db = firestore.client()
+    db.collection('complaints').document(complaintID).update({'status': 'Closed'})

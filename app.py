@@ -9,7 +9,7 @@ from flask import flash
 from controller.complaints import fetch_complaints, fetch_single_complaint
 from controller.supervisor import get_supervisors, upload_image_and_data
 from controller.stats import get_complaints
-from controller.complaints import fetch_complaints
+from controller.complaints import fetch_complaints, closeComplaint
 
 
 cred = credentials.Certificate("serviceAccountKey.json")
@@ -51,9 +51,13 @@ def home():
     complaints = get_complaints()
     return render_template('home.html.jinja', complaints=complaints)
 
-@app.route("/complaints/<complaintType>", methods=['GET'])
+@app.route("/complaints/<complaintType>", methods=['GET', 'POST'])
 @login_required
 def complaintsFunction(complaintType):
+    if request.method == 'POST':
+        closeComplaint(request.form['compid'])
+        flash("Complaint Closed Successfully!", 'success')
+        return redirect(url_for('complaintsFunction',complaintType='Resolved'))
     comps = fetch_complaints(complaintType)
     return render_template("complaints_table.html", comps=comps)
 
