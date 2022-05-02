@@ -12,3 +12,15 @@ def fetch_complaints(complaintType):
             result.append(res)
     db.close()
     return result
+
+def fetch_single_complaint(complaintID):
+    db = firestore.client()
+    docs = db.collection('complaints').get()
+    result=[]
+    for doc in docs:
+        res = doc.to_dict()
+        if(res['id']==complaintID):
+            result.append(res)
+            break
+    db.close()
+    return result
