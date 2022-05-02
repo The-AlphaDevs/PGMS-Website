@@ -11,8 +11,6 @@ def fetch_complaints(complaintType):
         if(res['status']==complaintType):
             result.append(res)
     db.close()
-    # print("result")
-    # print(result)
     return result
 
 def fetch_single_complaint(complaintID):
@@ -25,6 +23,4 @@ def fetch_single_complaint(complaintID):
             result.append(res)
             break
     db.close()
-    # print("result")
-    # print(result)
     return result

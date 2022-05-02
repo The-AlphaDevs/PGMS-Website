@@ -8,6 +8,8 @@ from firebase_admin import credentials
 from flask import flash
 from controller.complaints import fetch_complaints, fetch_single_complaint
 from controller.supervisor import get_supervisors, upload_image_and_data
+from controller.stats import get_complaints
+from controller.complaints import fetch_complaints
 
 
 cred = credentials.Certificate("serviceAccountKey.json")
@@ -46,8 +48,8 @@ def login_required(f):
 @app.route("/home")
 @login_required
 def home():
-    return render_template('base.html')
-
+    complaints = get_complaints()
+    return render_template('home.html.jinja', complaints=complaints)
 
 @app.route("/complaints/<complaintType>", methods=['GET'])
 @login_required
@@ -60,7 +62,6 @@ def complaintsFunction(complaintType):
 def detailedComplaint(complaintid):
     comp = fetch_single_complaint(complaintid)
     return render_template("detailed_complaint.html", comp=comp)
-
 
 @app.route("/supervisor", methods=['GET'])
 @login_required

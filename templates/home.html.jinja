@@ -1,0 +1,366 @@
+{% extends "base.html" %}
+
+{% block title %} PGMS Admin - Home {% endblock %} 
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+{% block content %} 
+
+<div class="content-wrapper">
+    <div class="charts">
+        <div class="row">
+            <div class="col-lg-6 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Complaint Locations</h4>
+                        <div id='osm-map'></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Wardwise Complaints</h4>
+                        <div style="height:300px;">
+                            <canvas id="wardwiseComplaintsCountMultiLineChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+        <div class="row">
+            <div class="col-lg-6 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Daily Complaints</h4>
+                        <canvas id="dailyComplaintsCountLineChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Complaint Status</h4>
+                        <canvas id="allTimeComplaintsDoughnutChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific JS Plugins goes HERE  -->
+{% block js_plugins %}
+    <!-- Chertjs Plugins-->
+    <script src="/static/assets/vendors/chart.js/Chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    
+    <!-- Leafletjs Plugins-->
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+    <link href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script>
+{% endblock js_plugins %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+    //Complaint statuses
+    var PENDING=     "Pending";
+    var IN_PROGRESS= "In Progress";
+    var RESOLVED=    "Resolved";
+    var CLOSED=      "Closed";
+    var IN_REVIEW=   "In Review";
+    var REMOVED=     "Removed";
+
+    const multiLineChartBorderColor= {
+        "Pending":      "rgba(255, 99, 132, 1)",
+        "In Progress":  "rgba(54, 162, 235, 1)",
+        "Resolved":     "rgba(255, 206, 86, 1)",
+        "Closed":       "rgba(75, 222, 112, 1)",
+        "In Review":    "rgba(153, 102, 255, 1)",
+        "Removed":      "rgba(255, 69, 64, 1)"
+    };
+
+    const doughnutChartColors = [ "rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(255, 206, 86, 1)", "rgba(75, 222, 112, 1)", "rgba(153, 102, 255, 1)", "rgba(255, 69, 64, 1)"
+    ];
+    
+    var doughnutPieOptions = {
+        responsive: true,
+        animation: {
+            animateScale: true,
+            animateRotate: true
+        }
+    };
+
+    var lineChartOptions = {
+        responsive: true,
+        animation: {
+            animateScale: true,
+            animateRotate: true
+        },
+        scales: {
+        yAxes: [{
+            ticks: {
+            min: .0,
+            stepSize: 1
+            }
+        }],
+        xAxes: [{
+            type: 'time',
+            time: {
+            unit: 'day',
+            tooltipFormat: 'MMM dd'
+            }
+        }],
+        }
+    };    
+    
+    var multiLineChartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: {
+            animateScale: true,
+            animateRotate: true
+        },
+        scales: {
+        yAxes: [{
+            ticks: {
+                min: .0,
+                stepSize: 1
+            }
+        }],
+        }
+    };
+
+    const WARDS = [
+        'Ward A','Ward B','Ward C','Ward D','Ward E','Ward F North','Ward F South','Ward G North','Ward G South','Ward H East','Ward H West','Ward K East','Ward K West','Ward L','Ward M East','Ward M West','Ward N','Ward P North','Ward P South','Ward R Central','Ward R North','Ward R South','Ward S','Ward T',
+    ];
+    
+    //"In Review" is aka "Issue Reported"
+    const complaintStatus = {
+        PENDING: "Pending", IN_PROGRESS: "In Progress", RESOLVED: "Resolved", CLOSED: "Closed", IN_REVIEW: "In Review",  REMOVED:     "Removed"
+    };
+
+    function doughnutPieData(values) {
+        return {
+            datasets: [{
+                data: values,
+                backgroundColor: doughnutChartColors,
+                borderColor: doughnutChartColors,
+            }],
+        // These labels appear in the legend and in the tooltips when hovering different arcs
+        labels: [PENDING,IN_PROGRESS,RESOLVED,CLOSED,IN_REVIEW,REMOVED]};
+    };
+
+    function lineChartData(values) {
+        return {
+            datasets: [{
+            label:"Complaint Count",
+            data: values,
+            fill: false,
+            backgroundColor:  'rgba(153, 102, 255, 1)',
+            borderColor:  'rgba(153, 102, 255, 1)',
+            pointHoverBorderColor: "white",
+            pointHoverBackgroundColor: "orange"
+            }],
+        };
+    }
+
+    /// Returns the [date] object (millisecondsFromEpoch) with 00:00:00 time
+    function standardizeDate(dateString){
+        var date = new Date(Date.parse(dateString));
+        const startDate =  new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0,0,0);
+        return Date.parse(startDate);
+    }
+
+    function generateLabledDailyCount(dailyComplaintCount){
+        const data= [];
+        var dates = Object.keys(dailyComplaintCount);
+        dates = dates.sort();
+        dates.forEach( (date) => data.push({x:new Date(parseInt(date)), y:dailyComplaintCount[date]}));
+
+        return data;
+    }    
+    
+    function generateLabledWardwiseComplaintCountDataset(wardwiseComplaintCount){
+        const datasets= [];
+        
+        for(const [_, status] of Object.entries(complaintStatus)){
+            var values = [];
+            for(const [wardName, counts] of Object.entries(wardwiseComplaintCount)){
+                values.push({x:wardName, y:counts[status]});
+            }
+            
+            var dataset = {label: status, data: values, fill: false, backgroundColor: multiLineChartBorderColor[status], borderColor: multiLineChartBorderColor[status], pointHoverBorderColor: "grey",};
+            datasets.push(dataset);
+        }
+        return datasets;
+    }
+
+    function isTodaysComplaint(d){
+        var today = new Date();
+        var date  = new Date(Date.parse(d));
+        var start = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0,0,0);
+        var end = new Date(today.getFullYear(), today.getMonth(), today.getDate()+1, 0,0,0);
+        return  ((date >= start) && (date<end));
+    }
+
+    function initializeWardWiseCount(){
+        wardWiseCount = {};
+
+        WARDS.forEach(ward=>{
+            wardCount = {};
+            for(const [_, status] of Object.entries(complaintStatus)){
+                wardCount[status] = 0;
+            wardWiseCount[ward] = wardCount;
+        }});
+        return wardWiseCount;
+    }
+
+    function setUpMarkersAndPopups(complaintMarkersData){
+        complaintMarkersData.forEach((data)=>{
+            var {latitude, longitude, imageUrl, status, dateTime, complaint, ward} = data;
+            var date  = new Date(Date.parse(dateTime));
+            var dateString = date.toDateString();
+            var popupContent = `
+                <div class="max-w-sm w-full lg:max-w-full lg:flex border-r border-b border-l border-gray-400 lg:border-l lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b">
+                    <div class="h-24 my-1 lg:h-auto lg:w-24 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden" style="background-image: url(${imageUrl})" title="Complaint Image">
+                    </div>
+                    <div class="pt-1 flex flex-col justify-between leading-normal">
+                        <div class="lg:border-l border-gray-400 mb-1 ml-1 px-1 ">
+                            <p   class="text-xs text-gray-700 flex items-center m-0">${status} </p>
+                            <div class="text-md text-gray-900 font-bold m-0"><a href="{{url_for('detailedComplaint')}}">${complaint.replace(/^(.{25}).{2,}/, "$1…")}</a></div>
+                            <p   class="text-xs text-gray-700 m-0 mb-2 p-0">${ward}</p>
+                            <p class="text-gray-600 m-0 text-xs">${dateString}</p>
+                        </div>
+                    </div>
+                </div>`;
+
+            var marker = L.marker(L.latLng(parseFloat(latitude), parseFloat(longitude))).addTo(map);
+            marker.bindPopup(popupContent);
+        });
+    }
+
+
+    
+    //Generate the complaint counts of status
+    // "Pending", "In Progress", "Resolved", "Closed", "In Review", "Removed" respectively
+    
+    var countDict = {};
+    var dailyComplaintCount = {};
+    var wardwiseComplaintCount = initializeWardWiseCount();
+    var complaintMarkersData = [];
+
+    for (const [_, status] of Object.entries(complaintStatus)) {
+        countDict[status] = 0;
+    }
+    
+    {% for complaint in  complaints %}
+        var markerData = {};
+        
+        var status = `{{complaint['status']}}`;
+        var ward = `{{complaint['ward']}}`;
+        countDict[status] += 1;
+
+        var date = standardizeDate(`{{complaint['dateTime']}}`);
+        
+        wardwiseComplaintCount[ward][status] = parseInt(wardwiseComplaintCount[ward][status]) + 1;
+        
+        //If the date is not encountered before, initialize its count
+        if(dailyComplaintCount[date] === undefined){
+            dailyComplaintCount[date] = 0;
+        }
+
+        if(status === IN_PROGRESS || status === IN_REVIEW){
+            markerData["ward"] = ward;
+            markerData["status"] = status;
+            markerData["dateTime"] = `{{complaint['dateTime']}}`;
+            markerData["latitude"] = `{{complaint['latitude']}}`;
+            markerData["longitude"] = `{{complaint['longitude']}}`;
+            markerData["imageUrl"] = `{{complaint['imageData']['url']}}`;
+            markerData["complaint"] = `{{complaint['complaint']}}`;
+            markerData["id"] = `{{complaint['id']}}`;
+            complaintMarkersData.push(markerData);
+        }
+
+        dailyComplaintCount[date] +=1;
+    {% endfor %}
+
+    //Set data or datasets for all charts
+    var donutChartvalues                        = [countDict[PENDING], countDict[IN_PROGRESS], countDict[RESOLVED], countDict[CLOSED], countDict[IN_REVIEW], countDict[REMOVED]];
+    var dailyCountLineChartData                 = generateLabledDailyCount(dailyComplaintCount);
+    var wardwiseComplaintCountLineChartDataset  = generateLabledWardwiseComplaintCountDataset(wardwiseComplaintCount);
+    
+    //No. of complaints vs status: Doughnut chart
+    if ($("#allTimeComplaintsDoughnutChart").length) {
+        var doughnutChartCanvas = $("#allTimeComplaintsDoughnutChart").get(0).getContext("2d");
+        var doughnutChart = new Chart(doughnutChartCanvas, {
+            type: 'doughnut',
+            data: doughnutPieData(donutChartvalues),
+            options: doughnutPieOptions
+        });
+    }
+
+    //No. of complaints vs date: Line chart
+    if ($("#dailyComplaintsCountLineChart").length) {
+        var lineChartCanvas = $("#dailyComplaintsCountLineChart").get(0).getContext("2d");
+        var lineChart = new Chart(lineChartCanvas, {
+            type: 'line',
+            data: lineChartData(dailyCountLineChartData),
+            options: lineChartOptions
+        });
+    }   
+
+    //Number of complaints of various statuses vs wards: Multiline chart
+    if ($("#wardwiseComplaintsCountMultiLineChart").length) {
+        var multiLineChartCanvas = $("#wardwiseComplaintsCountMultiLineChart").get(0).getContext("2d");
+        var multiLineChart = new Chart(multiLineChartCanvas, {
+            type: 'line',
+            data: {
+                labels: WARDS,
+                datasets: wardwiseComplaintCountLineChartDataset
+            },
+            options: multiLineChartOptions
+        });
+    }
+
+//Handling the map
+var element = document.getElementById('osm-map');
+element.style = 'height:300px;';
+
+// Create Leaflet map on map element.
+var map = L.map(element);
+
+// Add OSM tile layer to the Leaflet map.
+L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+// Target's GPS coordinates of Mumbai, set zoom level
+var target = L.latLng('19.0760', '72.8777');
+map.setView(target, 11);
+
+//Adding ward regions to the map
+const wardsLayer=  new L.GeoJSON.AJAX(`{{url_for('static', filename='assets/BMC_Wards.geojson')}}`, {
+    onEachFeature: (f, l) => {
+        l.bindTooltip(`Ward ${f.properties["name"]}`, { sticky: true });
+        
+        //Initial style of the ward layer
+        l.setStyle({weight: 1, fillColor: "blue", fillOpacity:0.1 });
+        
+        l.on("mouseover", () => {
+            l.setStyle({fillColor: "green", fillOpacity: 0.5});
+        })
+        l.on("mouseout", () => {
+            l.setStyle({color: "rgb(51, 136, 255)",fillColor: "blue",fillOpacity:0.1});
+        });
+    }
+
+});
+
+wardsLayer.addTo(map);
+setUpMarkersAndPopups(complaintMarkersData)
+</script>
+
+{% endblock javascripts %}
