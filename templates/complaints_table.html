@@ -1,9 +1,9 @@
-{% extends "base-fullscreen.html" %}
+{% extends "base.html" %}
 
 {% block title %} Basic Table {% endblock %} 
 
 <!-- Specific CSS Plugins goes HERE  -->
-{% block css_plugins %}<script src="https://cdn.tailwindcss.com"></script>{% endblock css_plugins %}
+{% block css_plugins %} <script src="https://cdn.tailwindcss.com"></script>{% endblock css_plugins %}
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
@@ -16,7 +16,6 @@
       <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
           <div class="card-body" >
-
               <div class="flex justify-between">
                 <h4 class="card-title">Complaints</h4>
                 <li class="nav-item dropdown d-none d-lg-block">
@@ -235,10 +234,8 @@
                   {% for comp in comps %}
                   
                     <tr>
-                      <!-- <a href="{{url_for('detailedComplaint')}}">
-                        
-                      </a> -->
-                      <td><a href="{{url_for('detailedComplaint')}}">{{ comp['complaint'] }}</a></td>
+                      
+                      <td><a href="{{url_for('detailedComplaint', complaintid=comp['id'])}}">{{ comp['complaint'] }}</a></td>
                       <td>{{ comp['citizenEmail'] }}</td>
                       <td>{{ comp['dateTime'] }}</td>
                       <td>{{ comp['ward'] }}</td>

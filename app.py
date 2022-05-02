@@ -6,7 +6,7 @@ from flask import request,session
 import firebase_admin
 from firebase_admin import credentials
 from flask import flash
-from controller.complaints import fetch_complaints
+from controller.complaints import fetch_complaints, fetch_single_complaint
 from controller.supervisor import get_supervisors, upload_image_and_data
 
 
@@ -55,11 +55,11 @@ def complaintsFunction(complaintType):
     comps = fetch_complaints(complaintType)
     return render_template("complaints_table.html", comps=comps)
 
-@app.route("/detailed-complaint", methods=['GET'])
+@app.route("/detailed-complaint/<complaintid>", methods=['GET'])
 @login_required
-def detailedComplaint():
-    return render_template("detailed_complaint.html")
-
+def detailedComplaint(complaintid):
+    comp = fetch_single_complaint(complaintid)
+    return render_template("detailed_complaint.html", comp=comp)
 
 
 @app.route("/supervisor", methods=['GET'])
