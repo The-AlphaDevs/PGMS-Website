@@ -11,7 +11,7 @@
 {% block content %} 
 
   
-  <div class="content-wrapper h-screen">
+  <div class="content-wrapper">
     <div class="row">
       <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
@@ -19,7 +19,7 @@
               <div class="flex justify-between">
                 <h4 class="card-title">Complaints</h4>
                 <li class="nav-item dropdown d-none d-lg-block">
-                  <a class="nav-link dropdown-bordered dropdown-toggle dropdown-toggle-split" id="messageDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false"> 
+                  <a class="nav-link dropdown-bordered" id="messageDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false"> 
                     <div class="col-sm-6 col-md-3 col-lg-6" >
                       <i class="mdi mdi-filter" style="font-size: 1.5rem;"></i>
                     </div>
@@ -39,6 +39,19 @@
                           <p class="preview-subject ellipsis font-weight-medium text-dark">
                             <!-- <a "> -->
                               All Complaints
+                            <!-- </a> -->
+                          </p>
+                        
+                        <!-- <p class="fw-light small-text mb-0">This is a Bundle featuring 16 unique dashboards</p> -->
+                      </div>
+                    </a>
+                    <a class="dropdown-item preview-item" href="{{url_for('complaintsFunction',complaintType='Pending')}}">
+                      <div class="preview-item-content flex-grow py-2">
+                        
+                        
+                          <p class="preview-subject ellipsis font-weight-medium text-dark">
+                            <!-- <a "> -->
+                              Pending
                             <!-- </a> -->
                           </p>
                         
@@ -243,6 +256,9 @@
                       <td>{{ comp['supervisorEmail'] }}</td>
                       <td class="text-danger" style="text-align: center;">{{ comp['upvoteCount'] }}</td>
 
+                      {% if comp['status']=='Pending'%}
+                        <td><label class="badge badge-info">{{ comp['status'] }}</label></td>
+                      {% endif %}
                       {% if comp['status']=='In Progress'%}
                         <td><label class="badge badge-info">{{ comp['status'] }}</label></td>
                       {% endif %}
