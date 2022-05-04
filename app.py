@@ -9,7 +9,7 @@ from flask import flash
 from controller.complaints import fetch_complaints, fetch_single_complaint
 from controller.supervisor import get_supervisors, upload_image_and_data
 from controller.stats import get_complaints
-from controller.complaints import fetch_complaints, closeComplaint
+from controller.complaints import fetch_complaints, closeComplaint, valid_invalid
 
 
 cred = credentials.Certificate("serviceAccountKey.json")
@@ -61,9 +61,17 @@ def complaintsFunction(complaintType):
     comps = fetch_complaints(complaintType)
     return render_template("complaints_table.html", comps=comps)
 
-@app.route("/detailed-complaint/<complaintid>", methods=['GET'])
+@app.route("/detailed-complaint/<complaintid>", methods=['GET','POST'])
 @login_required
 def detailedComplaint(complaintid):
+    if request.method == 'POST':
+        value = request.form['validate']
+        cid = request.form['compid']
+        supemail = request.form['supemail']
+        closeComplaint(cid)
+        valid_invalid(value, cid, supemail)
+        return redirect(url_for('complaintsFunction',complaintType='Closed'))
+
     comp = fetch_single_complaint(complaintid)
     return render_template("detailed_complaint.html", comp=comp)
 
@@ -100,7 +108,7 @@ def login():
             auth.sign_in_with_email_and_password(email, password)
             session['email'] = email
             flash("Login Successfull!!", 'success')
-            return redirect(url_for('complaintsFunction'))
+            return redirect(url_for('home'))
         except:
             flash("Login Unsuccessfull!!", 'danger')
             return redirect(url_for('login'))

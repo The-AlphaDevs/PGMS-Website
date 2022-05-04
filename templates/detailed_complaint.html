@@ -12,7 +12,21 @@
 
 {% block content %}
 
-
+<main role="main" class="container">
+  <div class="row">
+  <div class="col-md-8">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+          {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">
+              {{ message }}
+          </div>
+          {% endfor %}
+      {% endif %}
+      {% endwith %}
+  </div>
+  </div>
+</main>
 
   <div class="content-wrapper">
     <div class="row">
@@ -334,10 +348,14 @@
                           <h4 class="card-title card-title-dash " style="padding-left: 60px;" style="font-size: 20px;">Actions</h4>
                           <p class="card-subtitle card-subtitle-dash" style="padding-left: 20px;"></p>
                         </div>
+                        <form method="POST">
                         <div class="template-demo" style="display: flex;justify-content: start;flex-direction: column;">
-                          <button type="button" class="btn btn-outline-success btn-fw" style="padding: 20px; background-color: lightgreen; font-size: 15px; font-weight: bold; ">Valid</button>
-                          <button type="button" class="btn btn-lg btn-block btn-danger" style="padding: 20px; background-color: lightcoral; font-size: 15px; font-weight: bold; ">Invalid</button>
+                          <input type="hidden" value="{{comp[0]['id']}}" name="compid">
+                          <input type="hidden" value="{{ comp[0]['supervisorEmail'] }}" name="supemail">
+                          <button type="submit" name="validate" value="valid" class="btn btn-outline-success btn-fw" style="padding: 20px; background-color: lightgreen; font-size: 15px; font-weight: bold; ">Valid</button>
+                          <button type="submit" name="validate" value="invalid" class="btn btn-lg btn-block btn-danger" style="padding: 20px; background-color: lightcoral; font-size: 15px; font-weight: bold; ">Invalid</button>
                         </div>
+                        </form>
                       </div>
                       
                     </div>
