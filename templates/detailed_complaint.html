@@ -262,8 +262,8 @@
                             </div>
                           {% else %}
                             <li style="padding-bottom:4em">
-                              <div class="d-flex justify-content-between"  onload="dtFunction()">
-                                {% if ((comp[0]['status'] == "In Progress") or (comp[0]['status'] == "Resolved") or (comp[0]['status'] == "Closed")) %}
+                              <div class="d-flex justify-content-between">
+                                {% if ((comp[0]['status'] == "In Progress") or (comp[0]['status'] == "Resolved") or (comp[0]['status'] == "Closed") or (comp[0]['status'] == "Issue Reported")) %}
                                   <div><span class="text-ligh-green" style="font-size: 15px; color: green; font-weight: bold;">In Progress</span></div>
                                 {% else %}
                                   <div><span class="text-ligh-green" style="font-size: 15px; color: red">In Progress</span></div>
@@ -280,7 +280,7 @@
                                   
                                 </script> -->
                                 <!-- <p id="myText"></p> -->
-                                {% if ((comp[0]['status'] == "In Progress") or (comp[0]['status'] == "Resolved") or (comp[0]['status'] == "Closed")) %}
+                                {% if ((comp[0]['status'] == "In Progress") or (comp[0]['status'] == "Resolved") or (comp[0]['status'] == "Closed") or (comp[0]['status'] == "Issue Reported")) %}
                                   <p id="myText">{{ comp[0]['dateTime'] }}</p>
                                 {% else %}
                                   <p>Not yet Approved</p>
@@ -292,7 +292,7 @@
                           
                             <li style="padding-bottom:4em">
                               <div class="d-flex justify-content-between">
-                                {% if ((comp[0]['status'] == "Resolved") or (comp[0]['status'] == "Closed")) %}
+                                {% if ((comp[0]['status'] == "Resolved") or (comp[0]['status'] == "Closed") or (comp[0]['status'] == "Issue Reported")) %}
                                   <div><span class="text-ligh-green" style="font-size: 15px; color: green; font-weight: bold;">Resolved</span></div>
                                 {% else %}
                                   <div><span class="text-ligh-green" style="font-size: 15px; color: red">Resolved</span></div>
@@ -306,6 +306,22 @@
                                 </div>
                               </div>
                             </li>
+
+                          {% if comp[0]['feedback'] != null %}
+                            <li style="padding-bottom:4em">
+                              <div class="d-flex justify-content-between">
+                                {# <div><span class="text-light-green" style="font-size: 15px;">Closed</span></div> #}
+                                {% if comp[0]['feedback'] != null %}
+                                  <div><span class="text-ligh-green" style="font-size: 15px; color: green; font-weight: bold;">Issue Reported</span></div>
+                                {% else %}
+                                  <div><span class="text-ligh-green" style="font-size: 15px; color: red">Issue Reported</span></div>
+                                {% endif %}
+                                <div>
+                                  <p>{{comp[0]['issueRaisedDateTime']}}</p>
+                                </div>
+                              </div>
+                            </li>
+                            {% endif %}
 
                             <li style="padding-bottom:4em">
                               <div class="d-flex justify-content-between">
@@ -324,7 +340,6 @@
                                 </div>
                               </div>
                             </li>
-                            
                           </ul>
                           <div class="list align-items-center pt-3">
                             <!-- <div class="wrapper w-100">
@@ -338,66 +353,69 @@
                     </div>
                   </div>
               </div>
-
-              <div class="row flex justify-between">
-                <div class="col-12 grid-margin stretch-card">
-                  <div class="card card-rounded">
-                    <div class="card-body flex justify-between">
-                      <div class="col-lg-9">
-                        <div class="d-sm-flex justify-content-between align-items-start">
-                          <div>
-                            <h4 class="card-title card-title-dash">Issue Reported</h4>
-                            <p class="card-subtitle card-subtitle-dash" style="padding-bottom: 20px;"></p>
+              
+              {% if comp[0]['feedback'] != null %}
+                <div class="row flex justify-between">
+                  <div class="col-12 grid-margin stretch-card">
+                    <div class="card card-rounded">
+                      <div class="card-body flex justify-between">
+                        <div class="col-lg-9">
+                          <div class="d-sm-flex justify-content-between align-items-start">
+                            <div>
+                              <h4 class="card-title card-title-dash">Issue Reported</h4>
+                              <p class="card-subtitle card-subtitle-dash" style="padding-bottom: 20px;"></p>
+                            </div>
+                            
                           </div>
-                          
-                        </div>
-                        <div class="product-anotherinfo-wrapper motha-column ">
-                            <div class="w-full">
-                              <div class="flex">
-                                <div class="w-1/4">
-                                  <div class="font-semibold">Date and Time</div>
+                          <div class="product-anotherinfo-wrapper motha-column ">
+                              <div class="w-full">
+                                <div class="flex">
+                                  <div class="w-1/4">
+                                    <div class="font-semibold">Date and Time</div>
+                                  </div>
+                                  <div class="w-3/4">
+                                    {{comp[0]['issueRaisedDateTime']}}
+                                  </div>
                                 </div>
-                                <div class="w-3/4">
-                                  01/05/2022, 12:00:00
+                                <div class="flex  mt-4">
+                                  <div class="w-1/4">
+                                    <div class="font-semibold">Issue</div>
+                                  </div>
+                                  <div class="w-3/4">
+                                    {{comp[0]['feedback']}}
+                                  </div>
                                 </div>
                               </div>
-                              <div class="flex  mt-4">
-                                <div class="w-1/4">
-                                  <div class="font-semibold">Issue</div>
-                                </div>
-                                <div class="w-3/4">
-                                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                                </div>
+                              <!-- <div class="mb-4 row-1 grid  grid-flow-col gap-1" style="font-size: 15px;">
                               </div>
-                            </div>
-                            <!-- <div class="mb-4 row-1 grid  grid-flow-col gap-1" style="font-size: 15px;">
-                            </div>
-                            <div class="mb-4  row-2   "  style="font-size: 15px;">
-                              <div class="font-semibold  inline-block row-span-3" style="font-size: 15px;">Issue</div>
-                              <div class="col-span-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</div>
-                            </div> -->
-                            <!-- <div>
-                              <li class="mb-4" style="font-size: 15px;"><span class="font-semibold w-40 inline-block" style="font-size: 15px;">Issue</span>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</li>
-                            </div> -->
-                              
-                          
+                              <div class="mb-4  row-2   "  style="font-size: 15px;">
+                                <div class="font-semibold  inline-block row-span-3" style="font-size: 15px;">Issue</div>
+                                <div class="col-span-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</div>
+                              </div> -->
+                              <!-- <div>
+                                <li class="mb-4" style="font-size: 15px;"><span class="font-semibold w-40 inline-block" style="font-size: 15px;">Issue</span>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</li>
+                              </div> -->
+                                
+                            
+                          </div>
                         </div>
+                        {% if comp[0]['status']!="Closed" %}
+                        <div class="col-lg-2"> 
+                          <div class="justify-content-between">
+                            <h4 class="card-title card-title-dash " style="padding-left: 60px;" style="font-size: 20px;">Actions</h4>
+                            <p class="card-subtitle card-subtitle-dash" style="padding-left: 20px;"></p>
+                          </div>
+                          <div class="template-demo" style="display: flex;justify-content: start;flex-direction: column;">
+                            <button type="button" class="btn btn-outline-success btn-fw" style="padding: 20px; background-color: lightgreen; font-size: 15px; font-weight: bold; ">Valid</button>
+                            <button type="button" class="btn btn-lg btn-block btn-danger" style="padding: 20px; background-color: lightcoral; font-size: 15px; font-weight: bold; ">Invalid</button>
+                          </div>
+                        </div>
+                        {% endif %}
                       </div>
-                      <div class="col-lg-2"> 
-                        <div class="justify-content-between">
-                          <h4 class="card-title card-title-dash " style="padding-left: 60px;" style="font-size: 20px;">Actions</h4>
-                          <p class="card-subtitle card-subtitle-dash" style="padding-left: 20px;"></p>
-                        </div>
-                        <div class="template-demo" style="display: flex;justify-content: start;flex-direction: column;">
-                          <button type="button" class="btn btn-outline-success btn-fw" style="padding: 20px; background-color: lightgreen; font-size: 15px; font-weight: bold; ">Valid</button>
-                          <button type="button" class="btn btn-lg btn-block btn-danger" style="padding: 20px; background-color: lightcoral; font-size: 15px; font-weight: bold; ">Invalid</button>
-                        </div>
-                      </div>
-                      
                     </div>
                   </div>
                 </div>
-              </div>
+              {% endif %}
             </div>
             </div>
           </div>
