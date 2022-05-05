@@ -70,6 +70,7 @@ def detailedComplaint(complaintid):
         supemail = request.form['supemail']
         closeComplaint(cid)
         valid_invalid(value, cid, supemail)
+        flash("Complaint has been marked "+value+" successfully!", 'success')
         return redirect(url_for('complaintsFunction',complaintType='Closed'))
 
     comp = fetch_single_complaint(complaintid)
