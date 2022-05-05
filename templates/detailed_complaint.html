@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %} Basic Table {% endblock %} 
+{% block title %} Detailed Complaint {% endblock %} 
 
 <!-- Specific CSS Plugins goes HERE  -->
 {% block css_plugins %}
@@ -14,7 +14,21 @@
 
 {% block content %}
 
-
+<main role="main" class="container">
+  <div class="row">
+  <div class="col-md-8">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+          {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">
+              {{ message }}
+          </div>
+          {% endfor %}
+      {% endif %}
+      {% endwith %}
+  </div>
+  </div>
+</main>
 
   <div class="content-wrapper">
     <div class="row">
@@ -399,18 +413,24 @@
                             
                           </div>
                         </div>
+
                         {% if comp[0]['status']!="Closed" %}
                         <div class="col-lg-2"> 
                           <div class="justify-content-between">
                             <h4 class="card-title card-title-dash " style="padding-left: 60px;" style="font-size: 20px;">Actions</h4>
                             <p class="card-subtitle card-subtitle-dash" style="padding-left: 20px;"></p>
                           </div>
-                          <div class="template-demo" style="display: flex;justify-content: start;flex-direction: column;">
-                            <button type="button" class="btn btn-outline-success btn-fw" style="padding: 20px; background-color: lightgreen; font-size: 15px; font-weight: bold; ">Valid</button>
-                            <button type="button" class="btn btn-lg btn-block btn-danger" style="padding: 20px; background-color: lightcoral; font-size: 15px; font-weight: bold; ">Invalid</button>
-                          </div>
+                          <form method="POST">
+                            <div class="template-demo" style="display: flex;justify-content: start;flex-direction: column;">
+                              <input type="hidden" value="{{comp[0]['id']}}" name="compid">
+                              <input type="hidden" value="{{ comp[0]['supervisorEmail'] }}" name="supemail">
+                              <button type="submit" name="validate" value="valid" class="btn btn-outline-success btn-fw" style="padding: 20px; background-color: lightgreen; font-size: 15px; font-weight: bold; ">Valid</button>
+                              <button type="submit" name="validate" value="invalid" class="btn btn-lg btn-block btn-danger" style="padding: 20px; background-color: lightcoral; font-size: 15px; font-weight: bold; ">Invalid</button>
+                            </div>
+                           </form>
                         </div>
                         {% endif %}
+
                       </div>
                     </div>
                   </div>

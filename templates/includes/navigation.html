@@ -7,21 +7,27 @@
         </div>
         <div>
           <a class="navbar-brand brand-logo" href="#">
-            <img src="/static/assets/images/logo.svg" alt="logo" />
+            <img src="/static/assets/images/d.png" alt="logo" />
           </a>
-          <a class="navbar-brand brand-logo-mini" href="#">
+          <!-- <a class="navbar-brand brand-logo-mini" href="#">
             <img src="/static/assets/images/logo-mini.svg" alt="logo" />
-          </a>
+          </a> -->
         </div>
       </div>
       <div class="navbar-menu-wrapper d-flex justify-between align-items-top"> 
         <ul class="navbar-nav">
           <li class="nav-item font-weight-semibold d-none d-lg-block ms-0">
-            <h1 class="welcome-text">Public Grievance Management System <span class="text-black fw-bold">Dashboard</span></h1>
-            <h3 class="welcome-sub-text"></h3>
+
+            <h1 class="welcome-text">Public Grievance Management System  <span class="text-black fw-bold">Admin Dashboard</span></h1>
+
           </li>
         </ul>
         <ul>
+          <li>
+            <a href="{{url_for('logout')}}" type="button" class="text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-3 py-2.5 text-center mr-2 mb-2">Logout</a>
+          </li>
+        </ul>
+        <!-- <ul>
           <li class="nav-item dropdown d-none d-lg-block user-dropdown">
             <a class="nav-link" id="UserDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
               <img class="img-xs rounded-circle" src="/static/assets/images/faces/face8.jpg" alt="Profile image"> </a>
@@ -36,6 +42,6 @@
         </ul>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
           <span class="mdi mdi-menu"></span>
-        </button>
+        </button> -->
       </div>
     </nav>

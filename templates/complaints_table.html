@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %} Basic Table {% endblock %} 
+{% block title %} Complaints {% endblock %} 
 
 <!-- Specific CSS Plugins goes HERE  -->
 {% block css_plugins %} <script src="https://cdn.tailwindcss.com"></script>{% endblock css_plugins %}
@@ -9,7 +9,21 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %} 
-
+    <main role="main" class="container">
+      <div class="row">
+      <div class="col-md-8">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+              {% for category, message in messages %}
+              <div class="alert alert-{{ category }}">
+                  {{ message }}
+              </div>
+              {% endfor %}
+          {% endif %}
+          {% endwith %}
+      </div>
+      </div>
+    </main>
   
   <div class="content-wrapper">
     <div class="row">
@@ -19,11 +33,11 @@
               <div class="flex justify-between">
                 <h4 class="card-title">Complaints</h4>
                 <li class="nav-item dropdown d-none d-lg-block">
-                  <a class="nav-link dropdown-bordered" id="messageDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false"> 
-                    <div class="col-sm-6 col-md-3 col-lg-6" >
-                      <i class="mdi mdi-filter" style="font-size: 1.5rem;"></i>
-                    </div>
-                  </a>
+
+                  <a class="nav-link dropdown-bordered dropdown-toggle dropdown-toggle-split text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 mr-2 mb-4 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" id="messageDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false" type="button"> <!-- <div class="col-sm-6 col-md-3 col-lg-6" > --> 
+                    <i class="ti-filter btn-icon-prepend pr-2"></i>Filter 
+                    <!-- </div> --> </a>
+
                   <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0" aria-labelledby="messageDropdown">
                     <!-- <a class="dropdown-item py-3" >
                       <!-- <p class="mb-0 font-weight-medium float-left">Select category</p> -->
@@ -236,8 +250,8 @@
                       <td></td>
                       <td></td>
                       <td></td>
-                      <td>No</td>
-                      <td>Results</td>
+                      <td><pre>No   Results</pre></td>
+                      <td></td>
                       <td></td>
                       <td></td>
                       <td></td>
@@ -274,6 +288,13 @@
                       {% if comp['status']=='Issue Reported'%}
                         <td><label class="badge badge-warning">{{ comp['status'] }}</label></td>
                       {% endif %} 
+
+                      {% if comp['status']=='Resolved'%}
+                      <form action="{{ url_for('complaintsFunction',complaintType='Resolved')}}" method="POST">
+                        <td><button type="submit" class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900">Close
+                          <input type="hidden" name="compid" value="{{ comp['id'] }}"></button></td>
+                      </form>
+                        {% endif %}
                     
                     </tr>
                   
