@@ -113,7 +113,11 @@ def login():
         except:
             flash("Login Unsuccessfull!!", 'danger')
             return redirect(url_for('login'))
-    return render_template("login.html")
+    if 'email' in session:
+        flash('Already Logged In!', 'info')
+        return redirect(url_for('home'))
+    else:
+        return render_template("login.html")
 
 @app.route("/logout")
 @login_required
