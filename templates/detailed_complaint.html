@@ -3,12 +3,14 @@
 {% block title %} Detailed Complaint {% endblock %} 
 
 <!-- Specific CSS Plugins goes HERE  -->
+{% block css_plugins %}
 
-{% block css_plugins %} <script src="https://cdn.tailwindcss.com"></script>{% endblock css_plugins %}
-
-
+<script src="https://cdn.tailwindcss.com"></script>
+{% endblock css_plugins %}
 <!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+
+{% endblock stylesheets %}
 
 {% block content %}
 
@@ -73,7 +75,14 @@
                             </div>
                             <div class="flex justify-center">
                               {% if 'supervisorImageData' in comp[0] %}
-                                <img src="{{comp[0]['supervisorImageData']['url']}}" alt="supervisor image">
+                                {% if comp[0]['supervisorImageData'] is none %}
+                                  <div class="text-center">
+                                    <img src="..\static\assets\images\no-image.png" width="300" height="600" alt="supervisor image">
+                                    <p class="font-semibold align-items-center" style="font-size: 15px;">Supervisor Image Not Available</p>
+                                  </div>
+                                {% else %}
+                                  <img src="{{comp[0]['supervisorImageData']['url']}}" alt="supervisor image">
+                                {% endif %}
                               {% else %}
                               <div class="text-center">
                                 <img src="..\static\assets\images\no-image.png" width="300" height="600" alt="supervisor image">
@@ -181,10 +190,11 @@
                                     <li class="mb-12" style="font-size: 15px;"><span class="font-semibold w-50 inline-block" style="font-size: 15px;">Supervisor Name</span>{{ comp[0]['supervisorName'] }}</li>
                                     <li class="mb-12" style="font-size: 15px;"><span class="font-semibold w-50 inline-block" style="font-size: 15px;">Supervisor Email</span>{{ comp[0]['supervisorEmail'] }}</li>
                                     <div>
-                                      {% if 'supervisorImageData' in comp[0] %}
-                                        <li class="mb-12" style="font-size: 15px;"><span class="font-semibold w-50 inline-block" style="font-size: 15px;">Resolution Date and Time</span>{{ comp[0]['supervisorImageData']['dateTime'] }}</li>
-                                      {% else %}
+                                      {% if comp[0]['supervisorImageData'] is none %}
                                         <li class="mb-12" style="font-size: 15px;"><span class="font-semibold w-50 inline-block" style="font-size: 15px;">Resolution Date and Time</span>Not yet resolved</li>
+                                        
+                                      {% else %}
+                                        <li class="mb-12" style="font-size: 15px;"><span class="font-semibold w-50 inline-block" style="font-size: 15px;">Resolution Date and Time</span>{{ comp[0]['supervisorImageData']['dateTime'] }}</li>
                                       {% endif %}
                                     </div>
                                     
@@ -241,127 +251,191 @@
                           <p class="mb-0"></p>
                         </div>
                         <ul class="bullet-line-list">
-                          <li style="padding-bottom:4em">
-                            <div class="d-flex justify-content-between"  onload="dtFunction()">
-                              <div><span class="text-light-green" style="font-size: 15px;">In Progress</span></div>
-                               <!-- <script>
-                                
-                                  var d = new Date("{{ comp[0]['dateTime'] }}");
-                                
-                                  var dt = d.toLocaleString("en-GB");
-                                  // document.write(dt);
-                                  document.getElementById("myText").innerHTML = dt;
-                                
-                                
-                              </script> -->
-                              <!-- <p id="myText"></p> -->
-                              
-                              <p id="myText">{{ comp[0]['dateTime'] }}</p>
-                              
-                            </div>
-                          </li>
-                         
-                          <li style="padding-bottom:4em">
-                            <div class="d-flex justify-content-between">
-                              <div><span class="text-light-green" style="font-size: 15px;">Resolved</span></div>
-                              <div>
-                                {% if 'supervisorImageData' in comp[0] %}
-                                  <p>{{ comp[0]['supervisorImageData']['dateTime'] }}</p>
-                                {% else %}
-                                  <p>Not yet resolved</p>
-                                {% endif %}
-                              </div>
-                            </div>
-                          </li>
-                          <li style="padding-bottom:4em">
-                            <div class="d-flex justify-content-between">
-                              <div><span class="text-light-green" style="font-size: 15px;">Closed</span></div>
-                              <div>
-                                {% if comp[0]['status']!='Closed' %}
-                                  <p>Not yet Closed</p>
-                                {% else %}
-                                  <p>Closed</p>
-                                {% endif %}
-                              </div>
-                            </div>
-                          </li>
                           
-                        </ul>
-                        <div class="list align-items-center pt-3">
-                          <!-- <div class="wrapper w-100">
-                            <p class="mb-0">
-                              <a href="#" class="fw-bold text-primary">Show all <i class="mdi mdi-arrow-right ms-2"></i></a>
-                            </p>
-                          </div> -->
-                        </div>
+                          <li style="padding-bottom:4em">
+                            <div class="d-flex justify-content-between">
+                              <div><span class="text-ligh-green" style="font-size: 15px; color: green; font-weight: bold;">Pending</span></div>
+                              
+                              <div>
+                                <p id="myText">{{ comp[0]['imageData']['dateTime'] }}</p>
+                              </div>
+                            </div>
+                          </li>
+
+                          {% if (comp[0]['status'] == "Rejected") %}
+                            <li style="padding-bottom:4em">
+                              <div class="d-flex justify-content-between">
+                                <div><span class="text-ligh-green" style="font-size: 15px; color: green; font-weight: bold;">Rejected</span></div>
+                                <div>
+                                  <p id="myText">{{ comp[0]['dateTime'] }}</p>
+                                </div>
+                              </div>
+                            </li>
+                            </ul>
+                            <div class="list align-items-center pt-3">
+                            </div>
+                          {% else %}
+                            <li style="padding-bottom:4em">
+                              <div class="d-flex justify-content-between">
+                                {% if ((comp[0]['status'] == "In Progress") or (comp[0]['status'] == "Resolved") or (comp[0]['status'] == "Closed") or (comp[0]['status'] == "Issue Reported")) %}
+                                  <div><span class="text-ligh-green" style="font-size: 15px; color: green; font-weight: bold;">In Progress</span></div>
+                                {% else %}
+                                  <div><span class="text-ligh-green" style="font-size: 15px; color: red">In Progress</span></div>
+                                {% endif %}
+                                {# <div><span class="text-light-green" style="font-size: 15px;">In Progress</span></div> #}
+                                <!-- <script>
+                                  
+                                    var d = new Date("{{ comp[0]['dateTime'] }}");
+                                  
+                                    var dt = d.toLocaleString("en-GB");
+                                    // document.write(dt);
+                                    document.getElementById("myText").innerHTML = dt;
+                                  
+                                  
+                                </script> -->
+                                <!-- <p id="myText"></p> -->
+                                {% if ((comp[0]['status'] == "In Progress") or (comp[0]['status'] == "Resolved") or (comp[0]['status'] == "Closed") or (comp[0]['status'] == "Issue Reported")) %}
+                                  <p id="myText">{{ comp[0]['dateTime'] }}</p>
+                                {% else %}
+                                  <p>Not yet Approved</p>
+                                {% endif %}
+                                
+                                
+                              </div>
+                            </li>
+                          
+                            <li style="padding-bottom:4em">
+                              <div class="d-flex justify-content-between">
+                                {% if ((comp[0]['status'] == "Resolved") or (comp[0]['status'] == "Closed") or (comp[0]['status'] == "Issue Reported")) %}
+                                  <div><span class="text-ligh-green" style="font-size: 15px; color: green; font-weight: bold;">Resolved</span></div>
+                                {% else %}
+                                  <div><span class="text-ligh-green" style="font-size: 15px; color: red">Resolved</span></div>
+                                {% endif %}
+                                <div>
+                                  {% if comp[0]['supervisorImageData'] is none %}
+                                    <p>Not yet Resolved</p>
+                                  {% else %}
+                                    <p>{{ comp[0]['supervisorImageData']['dateTime'] }}</p>
+                                  {% endif %}
+                                </div>
+                              </div>
+                            </li>
+
+                          {% if comp[0]['feedback'] != null %}
+                            <li style="padding-bottom:4em">
+                              <div class="d-flex justify-content-between">
+                                {# <div><span class="text-light-green" style="font-size: 15px;">Closed</span></div> #}
+                                {% if comp[0]['feedback'] != null %}
+                                  <div><span class="text-ligh-green" style="font-size: 15px; color: green; font-weight: bold;">Issue Reported</span></div>
+                                {% else %}
+                                  <div><span class="text-ligh-green" style="font-size: 15px; color: red">Issue Reported</span></div>
+                                {% endif %}
+                                <div>
+                                  <p>{{comp[0]['issueRaisedDateTime']}}</p>
+                                </div>
+                              </div>
+                            </li>
+                            {% endif %}
+
+                            <li style="padding-bottom:4em">
+                              <div class="d-flex justify-content-between">
+                                {# <div><span class="text-light-green" style="font-size: 15px;">Closed</span></div> #}
+                                {% if ((comp[0]['status'] == "Closed")) %}
+                                  <div><span class="text-ligh-green" style="font-size: 15px; color: green; font-weight: bold;">Closed</span></div>
+                                {% else %}
+                                  <div><span class="text-ligh-green" style="font-size: 15px; color: red">Closed</span></div>
+                                {% endif %}
+                                <div>
+                                  {% if comp[0]['status']!='Closed' %}
+                                    <p>Not yet Closed</p>
+                                  {% else %}
+                                    <p>Closed</p>
+                                  {% endif %}
+                                </div>
+                              </div>
+                            </li>
+                          </ul>
+                          <div class="list align-items-center pt-3">
+                            <!-- <div class="wrapper w-100">
+                              <p class="mb-0">
+                                <a href="#" class="fw-bold text-primary">Show all <i class="mdi mdi-arrow-right ms-2"></i></a>
+                              </p>
+                            </div> -->
+                          </div>
+                        {% endif %}
                       </div>
                     </div>
                   </div>
               </div>
-
-              <div class="row flex justify-between">
-                <div class="col-12 grid-margin stretch-card">
-                  <div class="card card-rounded">
-                    <div class="card-body flex justify-between">
-                      <div class="col-lg-9">
-                        <div class="d-sm-flex justify-content-between align-items-start">
-                          <div>
-                            <h4 class="card-title card-title-dash">Issue Reported</h4>
-                            <p class="card-subtitle card-subtitle-dash" style="padding-bottom: 20px;"></p>
+              
+              {% if comp[0]['feedback'] != null %}
+                <div class="row flex justify-between">
+                  <div class="col-12 grid-margin stretch-card">
+                    <div class="card card-rounded">
+                      <div class="card-body flex justify-between">
+                        <div class="col-lg-9">
+                          <div class="d-sm-flex justify-content-between align-items-start">
+                            <div>
+                              <h4 class="card-title card-title-dash">Issue Reported</h4>
+                              <p class="card-subtitle card-subtitle-dash" style="padding-bottom: 20px;"></p>
+                            </div>
+                            
                           </div>
-                          
-                        </div>
-                        <div class="product-anotherinfo-wrapper motha-column ">
-                            <div class="w-full">
-                              <div class="flex">
-                                <div class="w-1/4">
-                                  <div class="font-semibold">Date and Time</div>
+                          <div class="product-anotherinfo-wrapper motha-column ">
+                              <div class="w-full">
+                                <div class="flex">
+                                  <div class="w-1/4">
+                                    <div class="font-semibold">Date and Time</div>
+                                  </div>
+                                  <div class="w-3/4">
+                                    {{comp[0]['issueRaisedDateTime']}}
+                                  </div>
                                 </div>
-                                <div class="w-3/4">
-                                  01/05/2022, 12:00:00
+                                <div class="flex  mt-4">
+                                  <div class="w-1/4">
+                                    <div class="font-semibold">Issue</div>
+                                  </div>
+                                  <div class="w-3/4">
+                                    {{comp[0]['feedback']}}
+                                  </div>
                                 </div>
                               </div>
-                              <div class="flex  mt-4">
-                                <div class="w-1/4">
-                                  <div class="font-semibold">Issue</div>
-                                </div>
-                                <div class="w-3/4">
-                                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                                </div>
+                              <!-- <div class="mb-4 row-1 grid  grid-flow-col gap-1" style="font-size: 15px;">
                               </div>
+                              <div class="mb-4  row-2   "  style="font-size: 15px;">
+                                <div class="font-semibold  inline-block row-span-3" style="font-size: 15px;">Issue</div>
+                                <div class="col-span-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</div>
+                              </div> -->
+                              <!-- <div>
+                                <li class="mb-4" style="font-size: 15px;"><span class="font-semibold w-40 inline-block" style="font-size: 15px;">Issue</span>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</li>
+                              </div> -->
+                                
+                            
+                          </div>
+                        </div>
+
+                        {% if comp[0]['status']!="Closed" %}
+                        <div class="col-lg-2"> 
+                          <div class="justify-content-between">
+                            <h4 class="card-title card-title-dash " style="padding-left: 60px;" style="font-size: 20px;">Actions</h4>
+                            <p class="card-subtitle card-subtitle-dash" style="padding-left: 20px;"></p>
+                          </div>
+                          <form method="POST">
+                            <div class="template-demo" style="display: flex;justify-content: start;flex-direction: column;">
+                              <input type="hidden" value="{{comp[0]['id']}}" name="compid">
+                              <input type="hidden" value="{{ comp[0]['supervisorEmail'] }}" name="supemail">
+                              <button type="submit" name="validate" value="valid" class="btn btn-outline-success btn-fw" style="padding: 20px; background-color: lightgreen; font-size: 15px; font-weight: bold; ">Valid</button>
+                              <button type="submit" name="validate" value="invalid" class="btn btn-lg btn-block btn-danger" style="padding: 20px; background-color: lightcoral; font-size: 15px; font-weight: bold; ">Invalid</button>
                             </div>
-                            <!-- <div class="mb-4 row-1 grid  grid-flow-col gap-1" style="font-size: 15px;">
-                            </div>
-                            <div class="mb-4  row-2   "  style="font-size: 15px;">
-                              <div class="font-semibold  inline-block row-span-3" style="font-size: 15px;">Issue</div>
-                              <div class="col-span-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</div>
-                            </div> -->
-                            <!-- <div>
-                              <li class="mb-4" style="font-size: 15px;"><span class="font-semibold w-40 inline-block" style="font-size: 15px;">Issue</span>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</li>
-                            </div> -->
-                              
-                          
+                           </form>
                         </div>
+                        {% endif %}
+
                       </div>
-                      <div class="col-lg-2"> 
-                        <div class="justify-content-between">
-                          <h4 class="card-title card-title-dash " style="padding-left: 60px;" style="font-size: 20px;">Actions</h4>
-                          <p class="card-subtitle card-subtitle-dash" style="padding-left: 20px;"></p>
-                        </div>
-                        <form method="POST">
-                        <div class="template-demo" style="display: flex;justify-content: start;flex-direction: column;">
-                          <input type="hidden" value="{{comp[0]['id']}}" name="compid">
-                          <input type="hidden" value="{{ comp[0]['supervisorEmail'] }}" name="supemail">
-                          <button type="submit" name="validate" value="valid" class="btn btn-outline-success btn-fw" style="padding: 20px; background-color: lightgreen; font-size: 15px; font-weight: bold; ">Valid</button>
-                          <button type="submit" name="validate" value="invalid" class="btn btn-lg btn-block btn-danger" style="padding: 20px; background-color: lightcoral; font-size: 15px; font-weight: bold; ">Invalid</button>
-                        </div>
-                        </form>
-                      </div>
-                      
                     </div>
                   </div>
                 </div>
-              </div>
+              {% endif %}
             </div>
             </div>
           </div>
@@ -376,11 +450,12 @@
 {% block js_plugins %}
 
   <script src="/static/assets/vendors/chart.js/Chart.min.js"></script>
-  <script src="/static/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
-  <script src="/static/assets/vendors/progressbar.js/progressbar.min.js"></script>
+  {# <script src="/static/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script> #}
+  {# <script src="/static/assets/vendors/progressbar.js/progressbar.min.js"></script> #}
   <!-- JavaScript Bundle with Popper -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  {# <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script> #}
   
+  <!-- Leafletjs Plugins-->
   <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
   <link href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" rel="stylesheet"/>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script>
@@ -395,7 +470,6 @@
  
   <!-- Make sure you put this AFTER Leaflet's CSS -->
   <script>
-    //Handling the map
     //Handling the map
     var element = document.getElementById('osm-map');
     element.style = 'height:300px;';
@@ -414,8 +488,8 @@
     var date  = new Date(Date.parse(`{{comp[0]['dateTime']}}`));
     var dateString = date.toDateString();
     var status = `{{comp[0]['status']}}`;
-    var latitude = `{{comp[0]['latitude']}}`;
-    var longitude = `{{comp[0]['longitude']}}`;
+    var latitude = `{{comp[0]['imageData']['lat']}}`;
+    var longitude = `{{comp[0]['imageData']['long']}}`;
     var ward = `{{comp[0]['ward']}}`;
     var imageUrl = `{{comp[0]['imageData']['url']}}`;
     var complaint = `{{comp[0]['complaint']}}`;
