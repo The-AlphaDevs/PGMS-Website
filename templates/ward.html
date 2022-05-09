@@ -29,36 +29,31 @@
     <div class="row">
       <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
-          <div class="card-body">
-              <div class="flex justify-between">
-                  <div class="text-lg font-bold md:text-xl">Supervisor Details</div>
-                  <div ><a href="{{ url_for('addsupervisor') }}" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 mr-2 mb-4 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                    <i class="ti-plus btn-icon-prepend pr-2"></i>
-                    Add Supervisor
-                  </a></div>
-              </div>
-              <div class="row" >
-                  
-                </div>
-            <div class="table-responsive">
+          <div class="card-body space-y-4">
+                  <div class="text-lg font-bold md:text-xl">Ward Details</div>
+            <div class="table-responsive py-2">
               <table class="table">
                 <thead>
                   <tr class="text-center">
                     <th>Name</th>
-                    <th>Ward</th>
-                    <th>Score</th>
-                    <th>Active Complaints</th>
-                    <th>Complaints Overdue</th>
+                    <th>Locality</th>
+                    <th>Realtime Score</th>
+                    <th>Weekly Score</th>
+                    <th>Monthly Score</th>
+                    <th>Yearly Score</th>
+                    <th>Lifetime Score</th>
                   </tr>
                 </thead>
                 <tbody>
-                    {% for sup in sups %}
+                    {% for ward in wards %}
                         <tr class="text-center">
-                            <td>{{ sup['name'] }}</td>
-                            <td>{{ sup['ward'] }}</td>
-                            <td>{{ sup['score'] }}</td>
-                            <td>{{ sup['complaintsAssigned'] }}</td>
-                            <td>{{ sup['complaintsOverdue'] }}</td>
+                            <td>{{ ward['ward'] }}</td>
+                            <td>{{ ward['locality'] }}</td>
+                            <td>{{ ward['realtimeScore'] }}</td>
+                            <td>{{ ward['weeklyScore'] }}</td>
+                            <td>{{ ward['monthlyScore'] }}</td>
+                            <td>{{ ward['yearlyScore'] }}</td>
+                            <td>{{ ward['lifetimeScore'] }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
