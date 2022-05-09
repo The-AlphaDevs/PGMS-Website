@@ -10,6 +10,7 @@ from controller.complaints import fetch_complaints, fetch_single_complaint
 from controller.supervisor import get_supervisors, upload_image_and_data
 from controller.stats import get_complaints
 from controller.complaints import fetch_complaints, closeComplaint, valid_invalid
+from controller.wards import get_wards
 
 
 cred = credentials.Certificate("serviceAccountKey.json")
@@ -81,6 +82,12 @@ def detailedComplaint(complaintid):
 def supervisor():
     sups = get_supervisors()
     return render_template('supervisor.html',sups = sups)
+
+@app.route("/wards", methods=['GET'])
+@login_required
+def wards():
+    wards = get_wards()
+    return render_template('ward.html',wards = wards)
 
 @app.route("/addsupervisor", methods=['GET','POST'])
 @login_required

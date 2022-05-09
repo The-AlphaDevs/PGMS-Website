@@ -15,3 +15,5 @@ def get_complaints():
     db.close()
     
     return result
+
+
