@@ -75,7 +75,7 @@
                             </div>
                             <div class="flex justify-center">
                               {% if 'supervisorImageData' in comp[0] %}
-                                {% if comp[0]['supervisorImageData'] is none %}
+                                {% if comp[0]['supervisorImageData']['url'] is none %}
                                   <div class="text-center">
                                     <img src="..\static\assets\images\no-image.png" width="300" height="600" alt="supervisor image">
                                     <p class="font-semibold align-items-center" style="font-size: 15px;">Supervisor Image Not Available</p>
@@ -190,7 +190,7 @@
                                     <li class="mb-12" style="font-size: 15px;"><span class="font-semibold w-50 inline-block" style="font-size: 15px;">Supervisor Name</span>{{ comp[0]['supervisorName'] }}</li>
                                     <li class="mb-12" style="font-size: 15px;"><span class="font-semibold w-50 inline-block" style="font-size: 15px;">Supervisor Email</span>{{ comp[0]['supervisorEmail'] }}</li>
                                     <div>
-                                      {% if comp[0]['supervisorImageData'] is none %}
+                                      {% if comp[0]['supervisorImageData']['resolutionDateTime'] is none %}
                                         <li class="mb-12" style="font-size: 15px;"><span class="font-semibold w-50 inline-block" style="font-size: 15px;">Resolution Date and Time</span>Not yet resolved</li>
                                         
                                       {% else %}
@@ -312,7 +312,7 @@
                                   <div><span class="text-ligh-green" style="font-size: 15px; color: red">Resolved</span></div>
                                 {% endif %}
                                 <div>
-                                  {% if comp[0]['supervisorImageData'] is none %}
+                                  {% if comp[0]['supervisorImageData']['dateTime'] is none %}
                                     <p>Not yet Resolved</p>
                                   {% else %}
                                     <p>{{ comp[0]['supervisorImageData']['dateTime'] }}</p>
@@ -325,13 +325,17 @@
                             <li style="padding-bottom:4em">
                               <div class="d-flex justify-content-between">
                                 {# <div><span class="text-light-green" style="font-size: 15px;">Closed</span></div> #}
-                                {% if comp[0]['feedback'] != null %}
+                                {% if comp[0]['feedback'] is not none and comp[0]['status']=='Issue Reported' %}
                                   <div><span class="text-ligh-green" style="font-size: 15px; color: green; font-weight: bold;">Issue Reported</span></div>
                                 {% else %}
                                   <div><span class="text-ligh-green" style="font-size: 15px; color: red">Issue Reported</span></div>
                                 {% endif %}
                                 <div>
-                                  <p>{{comp[0]['issueRaisedDateTime']}}</p>
+                                  {% if comp[0]['issueReportedDateTime'] is none %}
+                                    <p>No Issue Reported</p>
+                                  {% else %}
+                                    <p>{{ comp[0]['issueReportedDateTime']}}</p>
+                                  {% endif %}
                                 </div>
                               </div>
                             </li>
@@ -368,7 +372,7 @@
                   </div>
               </div>
               
-              {% if comp[0]['feedback'] != null %}
+              {% if comp[0]['feedback'] is not none and comp[0]['status']=="Issue Reported" %}
                 <div class="row flex justify-between">
                   <div class="col-12 grid-margin stretch-card">
                     <div class="card card-rounded">
@@ -388,7 +392,7 @@
                                     <div class="font-semibold">Date and Time</div>
                                   </div>
                                   <div class="w-3/4">
-                                    {{comp[0]['issueRaisedDateTime']}}
+                                    {{comp[0]['issueReportedDateTime']}}
                                   </div>
                                 </div>
                                 <div class="flex  mt-4">
