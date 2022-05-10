@@ -150,11 +150,11 @@
     };
 
     const WARDS = [
-        'Ward A','Ward B','Ward C','Ward D','Ward E','Ward F North','Ward F South','Ward G North','Ward G South','Ward H East','Ward H West','Ward K East','Ward K West','Ward L','Ward M East','Ward M West','Ward N','Ward P North','Ward P South','Ward R Central','Ward R North','Ward R South','Ward S','Ward T',
+        'Ward A','Ward B','Ward C','Ward D','Ward E','Ward F North','Ward F South','Ward G North','Ward G South','Ward H East','Ward H West','Ward K East','Ward K West','Ward L','Ward M East','Ward M West','Ward N','Ward P North','Ward P South','Ward R Central','Ward R North','Ward R South','Ward S','Ward T', 'Unassigned'
     ];
     
     const complaintStatus = {
-        PENDING: "Pending", IN_PROGRESS: "In Progress", RESOLVED: "Resolved", CLOSED: "Closed", ISSUE_RAISED: "Issue Reported",  REJECTED:     "Rejected"
+        PENDING: "Pending", IN_PROGRESS: "In Progress", RESOLVED: "Resolved", CLOSED: "Closed", ISSUE_RAISED: "Issue Reported",  REJECTED:"Rejected"
     };
 
     function doughnutPieData(values) {
@@ -257,7 +257,20 @@
                     </div>
                 `;
 
-            var marker = L.marker(L.latLng(parseFloat(latitude), parseFloat(longitude))).addTo(map);
+            var violetIcon = new L.Icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-violet.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+            });
+            if(status == "Issue Reported"){
+                var marker = L.marker(L.latLng(parseFloat(latitude), parseFloat(longitude)), {icon: violetIcon}).addTo(map);
+            }
+            else{
+                var marker = L.marker(L.latLng(parseFloat(latitude), parseFloat(longitude))).addTo(map);
+            }
             marker.bindPopup(popupContent);
         });
     }
@@ -296,8 +309,8 @@
             markerData["ward"] = ward;
             markerData["status"] = status;
             markerData["dateTime"] = `{{complaint['dateTime']}}`;
-            markerData["latitude"] = `{{complaint['latitude']}}`;
-            markerData["longitude"] = `{{complaint['longitude']}}`;
+            markerData["latitude"] = `{{complaint['imageData']['lat']}}`;
+            markerData["longitude"] = `{{complaint['imageData']['long']}}`;
             markerData["imageUrl"] = `{{complaint['imageData']['url']}}`;
             markerData["complaint"] = `{{complaint['complaint']}}`;
             markerData["id"] = `{{complaint['id']}}`;
