@@ -27,7 +27,7 @@ def upload_image_and_data(file, name, email, ward, phoneno, dob):
         'email': email,
         'ward': ward,
         'phoneno': str(phoneno),
-        'dob': dob,
+        'dateOfBirth': dob,
         'imageUrl': blob.public_url,
         'score': 0,
         'joiningDate': str(dt_string),
